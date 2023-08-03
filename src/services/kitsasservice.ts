@@ -14,6 +14,7 @@ export class KitsasService {
   /**
    * Connect to Kitsas
    * @param options Login and connection options
+   * @see KitsasConnectionOptions to see all options
    * @returns Connection object
    * @throws InvalidCreditentialsError if creditentials are invalid
    * @throws TFARequiredError if 2FA is required
@@ -32,7 +33,7 @@ export class KitsasService {
     });
 
     const payload = {
-      username: options.email || process.env.KITSAS_USERNAME,
+      username: options.username || process.env.KITSAS_USERNAME,
       password: options.password || process.env.KITSAS_PASSWORD,
     };
 
