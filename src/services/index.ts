@@ -1,1 +1,2 @@
-export { SampleService } from './sample-service';
+export { KitsasService } from './kitsasservice';
+export { KitsasConnection } from './kitsasconnection';

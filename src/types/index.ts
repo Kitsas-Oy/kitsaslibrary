@@ -1,1 +1,1 @@
-export * from './sample-interface';
+export { KitsasConnectionOptions } from './kitsasconnectionoptions';

@@ -1,22 +1,15 @@
 {
-  "name": "typescript-library-template",
-  "version": "1.0.0",
-  "description": "Starter template for TypeScript libraries",
+  "name": "kitsas-library",
+  "version": "0.1.0",
+  "description": "KitsasHub Client Library",
   "main": "lib/main/index.js",
   "typings": "lib/main/index.d.ts",
   "module": "lib/module/index.js",
-  "repository": "https://github.com/amelspahic/typescript-library-template.git",
-  "author": "Amel Spahic",
+  "repository": "https://github.com/Kitsas-Oy/kitsaslibrary.git",
+  "author": "Kitsas Oy",
   "license": "MIT",
   "keywords": [
-    "typescript",
-    "library",
-    "template",
-    "starter",
-    "starter-template",
-    "starter-template-typescript",
-    "starter-template-typescript-library",
-    "tests"
+    "kitsas"
   ],
   "scripts": {
     "build": "run-p build:*",
@@ -92,5 +85,8 @@
     "exclude": [
       "**/*.spec.js"
     ]
+  },
+  "dependencies": {
+    "apisauce": "^3.0.1"
   }
 }
