@@ -14,7 +14,7 @@ npm install kitsas-library
 import { KitsasService } from './kitsasservice';
 
 const connection = await KitsasService.connect({
-  email: 'name@kitsas.fi',
+  username: 'name@kitsas.fi',
   password: 'secret',
 });
 ```
