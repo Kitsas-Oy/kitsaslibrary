@@ -7,7 +7,7 @@ import { KitsasService } from './kitsasservice';
 test('Incorrect creditentials', async (t) => {
   const options = {
     url: 'http://localhost:3000',
-    email: 'testi@testi.fi',
+    username: 'testi@testi.fi',
     password: 'Ruisräähkä',
   };
   const err = await t.throwsAsync<InvalidCreditentialsError>(async () =>
