@@ -19,4 +19,8 @@ export class KitsasConnectionOptions {
    * @default process.env.KITSAS_AGENT or KitsasLibrary
    */
   agent?: string | undefined = undefined;
+  /**
+  * Use mock implementation (for testing)
+  */
+  mock?: boolean = false
 }
