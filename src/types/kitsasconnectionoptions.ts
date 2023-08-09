@@ -20,6 +20,10 @@ export class KitsasConnectionOptions {
    */
   agent?: string | undefined = undefined;
   /**
+   * 2FA code
+   */
+  code?: string | undefined = undefined
+  /**
   * Use mock implementation (for testing)
   */
   mock?: boolean = false

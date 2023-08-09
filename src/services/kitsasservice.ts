@@ -5,9 +5,10 @@ import { KitsasConnectionOptions } from '../types/kitsasconnectionoptions';
 import * as Exceptions from '../types/kitsasexeptions';
 
 import { KitsasConnection } from './kitsasconnection';
+import { MockKitsasService } from '../moc/MocKitsasService';
 
 export class KitsasService {
-  private constructor() {
+  constructor() {
     throw Error('KitsasService is a static class');
   }
 
@@ -24,6 +25,10 @@ export class KitsasService {
   static async connect(
     options: KitsasConnectionOptions
   ): Promise<KitsasConnection> {
+    if( options.mock) {
+      return MockKitsasService.connect( options )
+    }
+
     const api = create({
       baseURL: options.url || process.env.KITSAS_URL || 'https://hub.kitsas.fi',
       headers: {
