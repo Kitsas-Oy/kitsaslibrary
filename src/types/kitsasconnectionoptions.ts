@@ -22,9 +22,9 @@ export class KitsasConnectionOptions {
   /**
    * 2FA code
    */
-  code?: string | undefined = undefined
+  code?: string | undefined = undefined;
   /**
-  * Use mock implementation (for testing)
-  */
-  mock?: boolean = false
+   * Use mock implementation (for testing)
+   */
+  mock?: boolean = false;
 }

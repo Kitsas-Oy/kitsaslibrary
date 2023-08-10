@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import { InvalidCreditentialsError } from '../types/kitsasexeptions';
+import { InvalidCredentialsError } from '../types/kitsasexeptions';
 
 import { KitsasService } from './kitsasservice';
 
@@ -10,8 +10,8 @@ test('Incorrect creditentials', async (t) => {
     username: 'testi@testi.fi',
     password: 'Ruisräähkä',
   };
-  const err = await t.throwsAsync<InvalidCreditentialsError>(async () =>
+  const err = await t.throwsAsync<InvalidCredentialsError>(async () =>
     KitsasService.connect(options)
   );
-  t.assert(err instanceof InvalidCreditentialsError);
+  t.assert(err instanceof InvalidCredentialsError);
 });

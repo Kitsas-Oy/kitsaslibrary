@@ -1,8 +1,9 @@
 import { ApisauceInstance, create } from 'apisauce';
 
+import { KitsasConnectionInterface } from '../interfaces';
 import { AuthResponse } from '../types/authresponse';
 
-export class KitsasConnection {
+export class KitsasConnection implements KitsasConnectionInterface {
   constructor(baseapi: string, agent: string, response: AuthResponse) {
     //    this.baseapi = baseapi;
     //    this.agent = agent;
@@ -17,10 +18,6 @@ export class KitsasConnection {
     });
   }
 
-  /**
-   * Get current user's name
-   * @returns User's name
-   */
   getName(): string {
     return this.name;
   }
