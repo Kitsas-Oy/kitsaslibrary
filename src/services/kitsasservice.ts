@@ -1,11 +1,12 @@
 import { create } from 'apisauce';
 
+import { KitsasConnectionInterface } from '../interfaces';
+import { MockKitsasService } from '../moc/MocKitsasService';
 import * as Responses from '../types/authresponse';
 import { KitsasConnectionOptions } from '../types/kitsasconnectionoptions';
 import * as Exceptions from '../types/kitsasexeptions';
 
 import { KitsasConnection } from './kitsasconnection';
-import { MockKitsasService } from '../moc/MocKitsasService';
 
 export class KitsasService {
   constructor() {
@@ -17,16 +18,16 @@ export class KitsasService {
    * @param options Login and connection options
    * @see KitsasConnectionOptions to see all options
    * @returns Connection object
-   * @throws InvalidCreditentialsError if creditentials are invalid
+   * @throws InvalidCredentialsError if credentials are invalid
    * @throws TFARequiredError if 2FA is required
    * @throws Error if network or server errors occurs
    *
    */
   static async connect(
     options: KitsasConnectionOptions
-  ): Promise<KitsasConnection> {
-    if( options.mock) {
-      return MockKitsasService.connect( options )
+  ): Promise<KitsasConnectionInterface> {
+    if (options.mock) {
+      return MockKitsasService.connect(options);
     }
 
     const api = create({
@@ -55,7 +56,7 @@ export class KitsasService {
     } else if (response.problem === 'CLIENT_ERROR') {
       const error = response.data as Responses.ErrorResponse;
       if (error.message === 'Invalid credentials') {
-        throw new Exceptions.InvalidCreditentialsError();
+        throw new Exceptions.InvalidCredentialsError();
       } else if (error.message === '2FA required') {
         throw new Exceptions.TFARequiredError();
       } else {
