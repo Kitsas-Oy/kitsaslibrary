@@ -4,6 +4,12 @@ import { InvalidCredentialsError } from '../types/kitsasexeptions';
 
 import { KitsasService } from './kitsasservice';
 
+const mockOptions = {
+  username: 'test@kitsas.fi',
+  password: 'Test+12345',
+  mock: true,
+};
+
 test('Incorrect credentials', async (t) => {
   const options = {
     url: 'http://localhost:3000',
@@ -17,11 +23,13 @@ test('Incorrect credentials', async (t) => {
 });
 
 test('Correct credentials with mock', async (t) => {
-  const options = {
-    username: 'test@kitsas.fi',
-    password: 'Test+12345',
-    mock: true,
-  };
-  const connection = await KitsasService.connect(options);
+  const connection = await KitsasService.connect(mockOptions);
   t.assert(connection.getName() === 'Test User');
+});
+
+test('Mock connection office list', async (t) => {
+  const connection = await KitsasService.connect(mockOptions);
+  const offices = await connection.getOffices();
+  t.assert(offices.length === 1);
+  t.assert(offices[0].name === 'Test Office');
 });
