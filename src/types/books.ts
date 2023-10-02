@@ -1,7 +1,8 @@
-export interface BookList {
+export interface BookListItem {
   id: string;
   name: string;
   businessId?: string;
+  badges: string[];
   group: {
     id: string;
     name: string;
@@ -16,4 +17,10 @@ export interface BookList {
     returnedUntil?: Date;
     period?: number;
   };
+}
+
+export interface AddBookResponse {
+  id: string;
+  name: string;
+  businessId?: string;
 }

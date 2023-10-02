@@ -1,33 +1,27 @@
-export interface OfficeList {
+import { LanguageString } from './language';
+
+export interface OfficeInList {
   id: string;
   name: string;
   businessId?: string;
 }
 
-interface OfficeRole {
+export interface OfficeRole {
   id: string;
-  name: {
-    fi: string;
-    sv?: string;
-    en?: string;
-  };
+  name: LanguageString;
   rights: string[];
 }
 
-interface OfficeBookshelf {
-  id: string;
-  name: string;
-  path: string;
+export interface OfficeRoleAdd {
+  rights: string[];
+  name: LanguageString;
 }
 
-export interface Office {
+export interface Bookshelf {
   id: string;
   name: string;
-  created: Date;
-  businessId?: string;
-  officeType?: string;
-  roles?: OfficeRole[];
-  bookshelves?: OfficeBookshelf[];
+  rights: string[];
+  subgroups: Bookshelf[];
 }
 
 interface OfficeUserTarget {
@@ -42,4 +36,20 @@ export interface OfficeUser {
   id: string;
   name: string;
   targets: OfficeUserTarget[];
+}
+
+export interface UserGroup {
+  id: string;
+  name: string;
+}
+
+export interface Office {
+  id: string;
+  name: string;
+  created: Date;
+  businessId?: string;
+  officeType?: string;
+  roles: OfficeRole[];
+  bookshelves: Bookshelf[];
+  userGroups: UserGroup[];
 }

@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 import { KitsasConnectionInterface } from '../interfaces';
-import { MockKitsasService } from '../moc/MocKitsasService';
+import { MockKitsasService } from '../moc/mockitsasservice';
 import * as Responses from '../types/authresponse';
 import { KitsasConnectionOptions } from '../types/kitsasconnectionoptions';
 import * as Exceptions from '../types/kitsasexeptions';

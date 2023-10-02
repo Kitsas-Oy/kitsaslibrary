@@ -2,7 +2,7 @@ import { KitsasConnectionInterface } from '../interfaces';
 import { KitsasConnectionOptions } from '../types/kitsasconnectionoptions';
 import * as Exceptions from '../types/kitsasexeptions';
 
-import { MockKitsasConnection } from './MockKitsasConnection';
+import { MockKitsasConnection } from './mockkitsasconnection';
 
 export class MockKitsasService {
   static async connect(
