@@ -1,5 +1,5 @@
 import { BookList } from '../types/books';
-import { Office, OfficeBook, OfficeList, OfficeUser } from '../types/office';
+import { Office, OfficeList, OfficeUser } from '../types/office';
 
 export interface KitsasConnectionInterface {
   /**
@@ -22,19 +22,14 @@ export interface KitsasConnectionInterface {
 
   /**
    * Get list of books
+   * @param target Office, user or bookshelf id
    * @returns List of books
    */
-  getBooks(): Promise<BookList[]>;
-
-  /**
-   * List books
-   * @param target Office or bookshelf id
-   */
-  getBooksOf(target: string): Promise<OfficeBook[]>;
+  getBooks(target?: string): Promise<BookList[]>;
 
   /**
    * List users and their roles
    * @param target Office, bookshelf or book id
    */
-  getUsersOf(target: string): Promise<OfficeUser[]>;
+  getPermissions(target: string): Promise<OfficeUser[]>;
 }

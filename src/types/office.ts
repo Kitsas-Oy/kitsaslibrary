@@ -30,25 +30,6 @@ export interface Office {
   bookshelves?: OfficeBookshelf[];
 }
 
-export interface OfficeBook {
-  id: string;
-  name: string;
-  businessId?: string;
-  bookshelf: {
-    id: string;
-    name: string;
-  };
-  created: Date;
-  modified?: Date;
-  documentCount?: number;
-  backend?: string;
-  vat: {
-    dueDate?: Date;
-    returnedUntil?: Date;
-    period?: number;
-  };
-}
-
 interface OfficeUserTarget {
   id: string;
   name: string;

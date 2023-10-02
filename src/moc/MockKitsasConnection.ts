@@ -1,7 +1,7 @@
 import { KitsasConnectionInterface } from '../interfaces';
 import { AuthResponse } from '../types/authresponse';
 import { BookList } from '../types/books';
-import { Office, OfficeBook, OfficeList, OfficeUser } from '../types/office';
+import { Office, OfficeList, OfficeUser } from '../types/office';
 
 export class MockKitsasConnection implements KitsasConnectionInterface {
   constructor(response: AuthResponse) {
@@ -54,30 +54,42 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
     });
   }
 
-  getBooks(): Promise<BookList[]> {
+  getBooks(target: string): Promise<BookList[]> {
+    if (target) {
+      return new Promise((resolve) => {
+        resolve([
+          {
+            id: '1dcb9463-829f-4369-9861-ae2ce7041f03',
+            name: 'Test Book',
+            businessId: '1234567-8',
+            group: {
+              id: target,
+              name: 'Test Bookshelf',
+              type: 'BOOKSHELF',
+            },
+            created: new Date('2023-01-01'),
+            modified: new Date('2023-09-05'),
+            documentCount: 0,
+            backend: 'KITSAS',
+            vat: {
+              dueDate: new Date('2023-10-12'),
+              returnedUntil: new Date('2023-08-31'),
+              period: 1,
+            },
+          },
+        ]);
+      });
+    }
     return new Promise((resolve) => {
       resolve([
         {
           id: '1dcb9463-829f-4369-9861-ae2ce7041f03',
           name: 'Test Book',
           businessId: '1234567-8',
-        },
-      ]);
-    });
-  }
-
-  getBooksOf(target: string): Promise<OfficeBook[]> {
-    if (target !== '1dcb9463-829f-4369-9861-ae2ce7041f03')
-      throw Error('Error getting books');
-    return new Promise((resolve) => {
-      resolve([
-        {
-          id: '1dcb9463-829f-4369-9861-ae2ce7041f03',
-          name: 'Test Book',
-          businessId: '1234567-8',
-          bookshelf: {
+          group: {
             id: 'e04bf1a5-9e63-4d3d-8d07-e26faf6442a3',
-            name: 'Test Bookshelf',
+            name: 'Test User',
+            type: 'USER',
           },
           created: new Date('2023-01-01'),
           modified: new Date('2023-09-05'),
@@ -93,7 +105,7 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
     });
   }
 
-  getUsersOf(target: string): Promise<OfficeUser[]> {
+  getPermissions(target: string): Promise<OfficeUser[]> {
     if (target !== '1dcb9463-829f-4369-9861-ae2ce7041f03')
       throw Error('Error getting users');
     return new Promise((resolve) => {

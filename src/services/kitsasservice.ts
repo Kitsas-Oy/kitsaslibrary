@@ -1,4 +1,4 @@
-import { create } from 'apisauce';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 import { KitsasConnectionInterface } from '../interfaces';
 import { MockKitsasService } from '../moc/MocKitsasService';
@@ -30,40 +30,50 @@ export class KitsasService {
       return MockKitsasService.connect(options);
     }
 
-    const api = create({
-      baseURL: options.url || process.env.KITSAS_URL || 'https://hub.kitsas.fi',
+    const baseURL =
+      options.url ||
+      (process && process.env.KITSAS_URL) ||
+      'https://hub.kitsas.fi';
+
+    const config: AxiosRequestConfig = {
+      baseURL: baseURL,
       headers: {
         'User-Agent':
-          options.agent || process.env.KITSAS_AGENT || 'KitsasLibrary',
+          options.agent ||
+          (process && process.env.KITSAS_AGENT) ||
+          'KitsasLibrary',
       },
-    });
+    };
 
     const payload = {
       username: options.username || process.env.KITSAS_USERNAME,
       password: options.password || process.env.KITSAS_PASSWORD,
     };
 
-    const response = await api.post('/v1/login', payload);
-
-    if (response.ok) {
-      const data = response.data as Responses.AuthResponse;
-
-      return new KitsasConnection(
-        api.getBaseURL(),
-        options.agent || process.env.KITSAS_AGENT || 'KitsasLibrary',
-        data
+    try {
+      const response = await axios.post<Responses.AuthResponse>(
+        '/v1/login',
+        payload,
+        config
       );
-    } else if (response.problem === 'CLIENT_ERROR') {
-      const error = response.data as Responses.ErrorResponse;
-      if (error.message === 'Invalid credentials') {
-        throw new Exceptions.InvalidCredentialsError();
-      } else if (error.message === '2FA required') {
-        throw new Exceptions.TFARequiredError();
+      return new KitsasConnection(
+        baseURL,
+        options.agent || process.env.KITSAS_AGENT || 'KitsasLibrary',
+        response.data
+      );
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<Responses.ErrorResponse>;
+        if (axiosError.response?.data?.message === 'Invalid credentials') {
+          throw new Exceptions.InvalidCredentialsError();
+        } else if (axiosError.response?.data?.message === '2FA required') {
+          throw new Exceptions.TFARequiredError();
+        } else {
+          throw new Error(axiosError.response?.statusText);
+        }
       } else {
-        throw new Error(error.message);
+        throw error;
       }
-    } else {
-      throw new Error(response.problem);
     }
   }
 }

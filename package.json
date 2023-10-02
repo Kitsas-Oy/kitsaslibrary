@@ -1,6 +1,6 @@
 {
   "name": "kitsas-library",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "KitsasHub Client Library",
   "main": "lib/main/index.js",
   "typings": "lib/main/index.d.ts",
@@ -87,6 +87,7 @@
     ]
   },
   "dependencies": {
-    "apisauce": "^3.0.1"
+    "apisauce": "^3.0.1",
+    "axios": "^1.5.1"
   }
 }
