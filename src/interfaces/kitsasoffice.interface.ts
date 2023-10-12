@@ -1,5 +1,5 @@
 import { BookListItem, LanguageString } from '../types';
-import { Bookshelf, OfficeRole, UserGroup } from '../types/office';
+import { Bookshelf, OfficeRole } from '../types/office';
 import { UserListItem } from '../types/user';
 
 export interface KitsasOfficeInterface {
@@ -59,11 +59,6 @@ export interface KitsasOfficeInterface {
    * Get bookshelves of the office
    */
   getBookshelves(): Bookshelf[];
-
-  /**
-   * Get user groups of the office
-   */
-  getUserGroups(): UserGroup[];
 
   /**
    * Get users of the office

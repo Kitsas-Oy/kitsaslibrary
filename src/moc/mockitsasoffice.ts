@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto';
 import { KitsasOfficeInterface } from '../interfaces/kitsasoffice.interface';
 import { LanguageString, OfficeRole } from '../types';
 import { BookListItem } from '../types/books';
-import { Bookshelf, UserGroup } from '../types/office';
+import { Bookshelf } from '../types/office';
 import { UserListItem } from '../types/user';
 
 export class MockKitsasOffice implements KitsasOfficeInterface {
@@ -43,13 +43,6 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
       name: 'Toinen testihylly',
       rights: ['A', 'O', 'OB', 'OD', 'OG', 'OL', 'OM', 'OP', 'OS', 'OT'],
       subgroups: [],
-    },
-  ];
-
-  private UserGroups: UserGroup[] = [
-    {
-      id: '1763e7ec-f076-4c0c-8777-c95f10ab452c',
-      name: 'Käyttäjäryhmä',
     },
   ];
 
@@ -134,10 +127,6 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
       this.roles = this.roles.filter((role) => role.id !== id);
       resolve();
     });
-  }
-
-  getUserGroups(): UserGroup[] {
-    return this.UserGroups;
   }
 
   getUsers(): Promise<UserListItem[]> {

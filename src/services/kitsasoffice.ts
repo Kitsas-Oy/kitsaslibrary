@@ -3,13 +3,7 @@ import axios from 'axios';
 import { KitsasOfficeInterface } from '../interfaces/kitsasoffice.interface';
 import { LanguageString } from '../types';
 import { BookListItem } from '../types/books';
-import {
-  Bookshelf,
-  Office,
-  OfficeRole,
-  OfficeRoleAdd,
-  UserGroup,
-} from '../types/office';
+import { Bookshelf, Office, OfficeRole, OfficeRoleAdd } from '../types/office';
 import { UserListItem } from '../types/user';
 
 import { KitsasConnection } from './kitsasconnection';
@@ -85,10 +79,6 @@ export class KitsasOffice implements KitsasOfficeInterface {
   async deleteRole(id: string): Promise<void> {
     await axios.delete(`/v1/roles/${id}`, await this.connection.getConfig());
     this.data.roles = this.data.roles.filter((r) => r.id !== id);
-  }
-
-  getUserGroups(): UserGroup[] {
-    return this.data.userGroups;
   }
 
   async getUsers(): Promise<UserListItem[]> {

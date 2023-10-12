@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
 import { KitsasConnectionInterface } from '../interfaces';
+import { KitsasBookInterface } from '../interfaces/kitsasbook.interface';
 import { KitsasOfficeInterface } from '../interfaces/kitsasoffice.interface';
 import {
   AddonCallInfo,
@@ -17,6 +18,7 @@ import { AddBookResponse, BookListItem } from '../types/books';
 import { Office, OfficeInList, OfficeUser } from '../types/office';
 import { PermissionPatch, Right } from '../types/rights';
 
+import { KitsasBook } from './kitsasbook';
 import { KitsasOffice } from './kitsasoffice';
 
 export class KitsasConnection implements KitsasConnectionInterface {
@@ -47,6 +49,14 @@ export class KitsasConnection implements KitsasConnectionInterface {
     return this.name;
   }
 
+  getBaseURL(): string {
+    return this.baseURL;
+  }
+
+  getAgent(): string {
+    return this.agent;
+  }
+
   async getOffices(): Promise<OfficeInList[]> {
     const { data } = await axios.get<OfficeInList[]>(
       '/v1/offices',
@@ -69,6 +79,14 @@ export class KitsasConnection implements KitsasConnectionInterface {
       await this.getConfig()
     );
     return data;
+  }
+
+  async getBook(bookId: string): Promise<KitsasBookInterface> {
+    const { data } = await axios.get<AuthResponse>(
+      '/v1/login/' + bookId,
+      await this.getConfig()
+    );
+    return new KitsasBook(this, data.access_token, bookId);
   }
 
   async addBook(
@@ -194,6 +212,23 @@ export class KitsasConnection implements KitsasConnectionInterface {
       category,
     };
     await axios.post('/v1/notifications', payload, await this.getConfig());
+  }
+
+  async replaceNotification(
+    bookId: string,
+    type: NotificationType,
+    title: LanguageString,
+    text: LanguageString,
+    category: string
+  ): Promise<void> {
+    const payload = {
+      bookId,
+      type,
+      title,
+      text,
+      category,
+    };
+    await axios.patch('/v1/notifications', payload, await this.getConfig());
   }
 
   async getNotifications(

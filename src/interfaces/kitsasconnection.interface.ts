@@ -13,6 +13,7 @@ import { AddBookResponse, BookListItem } from '../types/books';
 import { OfficeInList, OfficeUser } from '../types/office';
 import { PermissionPatch } from '../types/rights';
 
+import { KitsasBookInterface } from './kitsasbook.interface';
 import { KitsasOfficeInterface } from './kitsasoffice.interface';
 
 export interface KitsasConnectionInterface {
@@ -55,6 +56,12 @@ export interface KitsasConnectionInterface {
     backend?: string,
     planId?: number
   ): Promise<AddBookResponse>;
+
+  /**
+   * Get a book object
+   * @param bookId
+   */
+  getBook(bookId: string): Promise<KitsasBookInterface>;
 
   /**
    * List users and their roles
@@ -145,6 +152,14 @@ export interface KitsasConnectionInterface {
     title: LanguageString,
     text: LanguageString,
     category?: string
+  ): Promise<void>;
+
+  replaceNotification(
+    bookId: string,
+    type: NotificationType,
+    title: LanguageString,
+    text: LanguageString,
+    category: string
   ): Promise<void>;
 
   /**

@@ -2,6 +2,7 @@
 import { randomUUID } from 'crypto';
 
 import { KitsasConnectionInterface } from '../interfaces';
+import { KitsasBookInterface } from '../interfaces/kitsasbook.interface';
 import { KitsasOfficeInterface } from '../interfaces/kitsasoffice.interface';
 import {
   AddonCallInfo,
@@ -19,6 +20,7 @@ import { AddBookResponse, BookListItem } from '../types/books';
 import { OfficeInList, OfficeUser } from '../types/office';
 import { PermissionPatch } from '../types/rights';
 
+import { MockKitsasBook } from './mockitsasbook';
 import { MockKitsasOffice } from './mockitsasoffice';
 
 export class MockKitsasConnection implements KitsasConnectionInterface {
@@ -382,6 +384,13 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
     });
   }
 
+  getBook(bookId: string): Promise<KitsasBookInterface> {
+    const book = new MockKitsasBook(bookId);
+    return new Promise((resolve) => {
+      resolve(book);
+    });
+  }
+
   getAddonCallInfo(_callId: string): Promise<AddonCallInfo> {
     return new Promise((resolve) => {
       resolve({
@@ -469,6 +478,18 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
     _title: LanguageString,
     _text: LanguageString,
     _category?: string | undefined
+  ): Promise<void> {
+    return new Promise<void>((resolve) => {
+      resolve();
+    });
+  }
+
+  replaceNotification(
+    _bookId: string,
+    _type: NotificationType,
+    _title: LanguageString,
+    _text: LanguageString,
+    _category: string
   ): Promise<void> {
     return new Promise<void>((resolve) => {
       resolve();

@@ -38,11 +38,6 @@ export interface OfficeUser {
   targets: OfficeUserTarget[];
 }
 
-export interface UserGroup {
-  id: string;
-  name: string;
-}
-
 export interface Office {
   id: string;
   name: string;
@@ -51,5 +46,4 @@ export interface Office {
   officeType?: string;
   roles: OfficeRole[];
   bookshelves: Bookshelf[];
-  userGroups: UserGroup[];
 }
