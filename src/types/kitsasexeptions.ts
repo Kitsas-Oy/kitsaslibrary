@@ -9,3 +9,9 @@ export class TFARequiredError extends Error {
     super('2FA required');
   }
 }
+
+export class NetworkError extends Error {
+  constructor(message: string) {
+    super(message);
+  }
+}

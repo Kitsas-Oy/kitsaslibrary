@@ -30,34 +30,20 @@ export class KitsasService {
       return MockKitsasService.connect(options);
     }
 
-    const baseURL =
-      options.url ||
-      (process && process.env.KITSAS_URL) ||
-      'https://hub.kitsas.fi';
-
-    const config: AxiosRequestConfig = {
-      baseURL: baseURL,
-      headers: {
-        'User-Agent':
-          options.agent ||
-          (process && process.env.KITSAS_AGENT) ||
-          'KitsasLibrary',
-      },
-    };
-
     const payload = {
-      username: options.username || process.env.KITSAS_USERNAME,
-      password: options.password || process.env.KITSAS_PASSWORD,
+      username: options.username || (process && process.env.KITSAS_USERNAME),
+      password: options.password || (process && process.env.KITSAS_PASSWORD),
     };
+
+    const config = this.makeConfig(options);
+    const URL = '/v1/login';
 
     try {
-      const response = await axios.post<Responses.AuthResponse>(
-        '/v1/login',
-        payload,
-        config
-      );
+      const response = await (options.token
+        ? axios.get<Responses.AuthResponse>(URL, config)
+        : axios.post<Responses.AuthResponse>(URL, payload, config));
       return new KitsasConnection(
-        baseURL,
+        config.baseURL as string,
         options.agent || process.env.KITSAS_AGENT || 'KitsasLibrary',
         response.data
       );
@@ -69,11 +55,33 @@ export class KitsasService {
         } else if (axiosError.response?.data?.message === '2FA required') {
           throw new Exceptions.TFARequiredError();
         } else {
-          throw new Error(axiosError.response?.statusText);
+          throw new Exceptions.NetworkError(
+            axiosError.response?.data?.message || axiosError.message
+          );
         }
       } else {
         throw error;
       }
     }
+  }
+
+  static makeConfig(options: KitsasConnectionOptions): AxiosRequestConfig {
+    const baseURL =
+      options.url ||
+      (process && process.env.KITSAS_URL) ||
+      'https://hub.kitsas.fi';
+
+    const agent =
+      options.agent || (process && process.env.KITSAS_AGENT) || 'KitsasLibrary';
+
+    const config: AxiosRequestConfig = {
+      baseURL: baseURL,
+      headers: {
+        'User-Agent': agent,
+        Authorization: options.token ? `Bearer ${options.token}` : undefined,
+      },
+    };
+
+    return config;
   }
 }

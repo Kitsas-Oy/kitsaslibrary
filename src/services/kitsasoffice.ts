@@ -10,6 +10,7 @@ import {
   OfficeRoleAdd,
   UserGroup,
 } from '../types/office';
+import { UserListItem } from '../types/user';
 
 import { KitsasConnection } from './kitsasconnection';
 
@@ -88,5 +89,13 @@ export class KitsasOffice implements KitsasOfficeInterface {
 
   getUserGroups(): UserGroup[] {
     return this.data.userGroups;
+  }
+
+  async getUsers(): Promise<UserListItem[]> {
+    const { data } = await axios.get<UserListItem[]>(
+      `/v1/users?officeId=${this.data.id}`,
+      await this.connection.getConfig()
+    );
+    return data;
   }
 }

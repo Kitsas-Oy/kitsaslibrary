@@ -23,6 +23,12 @@ export class KitsasConnectionOptions {
    * 2FA code
    */
   code?: string | undefined = undefined;
+
+  /**
+   * OAuth2 access token
+   */
+  token?: string | undefined = undefined;
+
   /**
    * Use mock implementation (for testing)
    */

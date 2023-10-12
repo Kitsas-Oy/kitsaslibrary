@@ -1,8 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { randomUUID } from 'crypto';
 
 import { KitsasConnectionInterface } from '../interfaces';
 import { KitsasOfficeInterface } from '../interfaces/kitsasoffice.interface';
-import { Right } from '../types';
+import {
+  AddonCallInfo,
+  AddonInfoDto,
+  AddonListedDto,
+  AddonLogDto,
+  LanguageString,
+  LogStatus,
+  Notification,
+  NotificationType,
+  Right,
+} from '../types';
 import { AuthResponse } from '../types/authresponse';
 import { AddBookResponse, BookListItem } from '../types/books';
 import { OfficeInList, OfficeUser } from '../types/office';
@@ -351,7 +362,6 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setPermissions(_permissions: PermissionPatch[]): Promise<void> {
     return new Promise((resolve) => {
       resolve();
@@ -369,6 +379,121 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
         name: name,
         businessId: businessId,
       });
+    });
+  }
+
+  getAddonCallInfo(_callId: string): Promise<AddonCallInfo> {
+    return new Promise((resolve) => {
+      resolve({
+        user: {
+          id: randomUUID(),
+          name: 'Test User',
+        },
+        organization: {
+          id: randomUUID(),
+          name: 'Test Organization',
+        },
+        rights: ['Ts', 'Tl'],
+      });
+    });
+  }
+
+  getAddonList(_target: string): Promise<AddonListedDto[]> {
+    return new Promise((resolve) => {
+      resolve([
+        {
+          id: randomUUID(),
+          name: {
+            fi: 'Test Addon',
+          },
+          active: true,
+        },
+      ]);
+    });
+  }
+
+  getAddonInfo(addonId: string, _target: string): Promise<AddonInfoDto> {
+    return new Promise((resolve) => {
+      resolve({
+        id: addonId,
+        name: {
+          fi: 'Test Addon',
+        },
+        url: 'https://example.com',
+        callId: randomUUID(),
+        rights: ['Ts', 'Tl'],
+      });
+    });
+  }
+
+  writeAddonLog(
+    _bookId: string,
+    _status: LogStatus,
+    _message: string,
+    _data?: object
+  ): Promise<void> {
+    return new Promise<void>((resolve) => {
+      resolve();
+    });
+  }
+
+  getAddonLog(_bookId: string, _addonId?: string): Promise<AddonLogDto[]> {
+    return new Promise<AddonLogDto[]>((resolve) => {
+      resolve([
+        {
+          status: LogStatus.OK,
+          message: 'Test message',
+          timestamp: new Date(),
+        },
+      ]);
+    });
+  }
+
+  saveData(_bookId: string, _key: string, _data: object): Promise<void> {
+    return new Promise<void>((resolve) => {
+      resolve();
+    });
+  }
+
+  getData(_bookId: string, _key: string): Promise<object> {
+    return new Promise<object>((resolve) => {
+      resolve({
+        test: 'test',
+      });
+    });
+  }
+
+  addNotification(
+    _bookId: string,
+    _type: NotificationType,
+    _title: LanguageString,
+    _text: LanguageString,
+    _category?: string | undefined
+  ): Promise<void> {
+    return new Promise<void>((resolve) => {
+      resolve();
+    });
+  }
+
+  getNotifications(
+    _bookId: string,
+    _addonId?: string | undefined
+  ): Promise<Notification[]> {
+    return new Promise<Notification[]>((resolve) => {
+      resolve([
+        {
+          id: randomUUID(),
+          type: NotificationType.INFO,
+          title: {
+            fi: 'Test Notification',
+          },
+          text: {
+            fi: 'Test Notification Text',
+          },
+          category: 'test',
+          created: new Date(),
+        },
+      ]);
     });
   }
 

@@ -2,6 +2,16 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 import { KitsasConnectionInterface } from '../interfaces';
 import { KitsasOfficeInterface } from '../interfaces/kitsasoffice.interface';
+import {
+  AddonCallInfo,
+  AddonInfoDto,
+  AddonListedDto,
+  AddonLogDto,
+  LanguageString,
+  LogStatus,
+  Notification,
+  NotificationType,
+} from '../types';
 import { AuthResponse } from '../types/authresponse';
 import { AddBookResponse, BookListItem } from '../types/books';
 import { Office, OfficeInList, OfficeUser } from '../types/office';
@@ -64,12 +74,18 @@ export class KitsasConnection implements KitsasConnectionInterface {
   async addBook(
     bookshelfId: string,
     name: string,
-    businessId?: string
+    businessId?: string,
+    trial?: boolean,
+    backend?: string,
+    planId?: number
   ): Promise<AddBookResponse> {
     const payload = {
       name,
       businessId,
       location: bookshelfId,
+      trial,
+      backend,
+      planId,
     };
     const { data } = await axios.post<AddBookResponse>(
       `/v1/books/${bookshelfId}`,
@@ -94,6 +110,99 @@ export class KitsasConnection implements KitsasConnectionInterface {
   async listRights(): Promise<Right[]> {
     const { data } = await axios.get<Right[]>(
       '/v1/permissions/rights',
+      await this.getConfig()
+    );
+    return data;
+  }
+
+  async getAddonList(target: string): Promise<AddonListedDto[]> {
+    const { data } = await axios.get<AddonListedDto[]>(
+      `/v1/addons/?target=${target}`,
+      await this.getConfig()
+    );
+    return data;
+  }
+
+  async getAddonInfo(addonId: string, target: string): Promise<AddonInfoDto> {
+    const { data } = await axios.get<AddonInfoDto>(
+      `/v1/addons/${addonId}?target=${target}`,
+      await this.getConfig()
+    );
+    return data;
+  }
+
+  async getAddonCallInfo(callId: string): Promise<AddonCallInfo> {
+    const { data } = await axios.get<AddonCallInfo>(
+      `/v1/addons/call/${callId}`,
+      await this.getConfig()
+    );
+    return data;
+  }
+
+  async writeAddonLog(
+    bookId: string,
+    status: LogStatus,
+    message: string,
+    data?: object | undefined
+  ): Promise<void> {
+    const payload = {
+      bookId,
+      status,
+      message,
+      data,
+    };
+    await axios.post('/v1/addons/log', payload, await this.getConfig());
+  }
+
+  async getAddonLog(bookId: string, addonId?: string): Promise<AddonLogDto[]> {
+    const { data } = await axios.get<AddonLogDto[]>(
+      `/v1/addons/log/?bookId=${bookId}` +
+        (addonId ? ` &addonId=${addonId}` : ''),
+      await this.getConfig()
+    );
+    return data;
+  }
+
+  async saveData(bookId: string, key: string, data: object): Promise<void> {
+    await axios.put(
+      `/v1/addons/data/${bookId}/${key}`,
+      data,
+      await this.getConfig()
+    );
+  }
+
+  async getData(bookId: string, key: string): Promise<object> {
+    const { data } = await axios.get<object>(
+      `/v1/addons/data/${bookId}/${key}`,
+      await this.getConfig()
+    );
+    return data;
+  }
+
+  async addNotification(
+    bookId: string,
+    type: NotificationType,
+    title: LanguageString,
+    text: LanguageString,
+    category?: string | undefined
+  ): Promise<void> {
+    const payload = {
+      bookId,
+      type,
+      title,
+      text,
+      category,
+    };
+    await axios.post('/v1/notifications', payload, await this.getConfig());
+  }
+
+  async getNotifications(
+    bookId: string,
+    addonId?: string
+  ): Promise<Notification[]> {
+    const { data } = await axios.get<Notification[]>(
+      `/v1/notifications?bookId=${bookId}` +
+        (addonId ? `&addonId=${addonId}` : ''),
       await this.getConfig()
     );
     return data;

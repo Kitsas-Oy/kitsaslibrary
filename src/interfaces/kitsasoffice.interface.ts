@@ -1,5 +1,6 @@
-import { BookList, LanguageString } from '../types';
+import { BookListItem, LanguageString } from '../types';
 import { Bookshelf, OfficeRole, UserGroup } from '../types/office';
+import { UserListItem } from '../types/user';
 
 export interface KitsasOfficeInterface {
   /**
@@ -21,7 +22,7 @@ export interface KitsasOfficeInterface {
    * Get books (organization for bookkeeping) of the office
    * @param bookshelfId Bookshelf id, returns all books if not specified
    */
-  getBooks(bookshelfId?: string): Promise<BookList[]>;
+  getBooks(bookshelfId?: string): Promise<BookListItem[]>;
 
   /**
    * Get roles of the office
@@ -63,4 +64,9 @@ export interface KitsasOfficeInterface {
    * Get user groups of the office
    */
   getUserGroups(): UserGroup[];
+
+  /**
+   * Get users of the office
+   */
+  getUsers(): Promise<UserListItem[]>;
 }

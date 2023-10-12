@@ -1,4 +1,14 @@
-import { Right } from '../types';
+import {
+  AddonCallInfo,
+  AddonInfoDto,
+  AddonListedDto,
+  AddonLogDto,
+  LanguageString,
+  LogStatus,
+  Notification,
+  NotificationType,
+  Right,
+} from '../types';
 import { AddBookResponse, BookListItem } from '../types/books';
 import { OfficeInList, OfficeUser } from '../types/office';
 import { PermissionPatch } from '../types/rights';
@@ -40,7 +50,10 @@ export interface KitsasConnectionInterface {
   addBook(
     bookshelfId: string,
     name: string,
-    businessId?: string
+    businessId?: string,
+    trial?: boolean,
+    backend?: string,
+    planId?: number
   ): Promise<AddBookResponse>;
 
   /**
@@ -59,4 +72,86 @@ export interface KitsasConnectionInterface {
    * @returns List of rights
    */
   listRights(): Promise<Right[]>;
+
+  /**
+   * Get list of active and available addons
+   * @param target Book id
+   */
+  getAddonList(target: string): Promise<AddonListedDto[]>;
+
+  /**
+   * Get addon information
+   * @param addonId
+   * @param target
+   */
+  getAddonInfo(addonId: string, target: string): Promise<AddonInfoDto>;
+
+  /**
+   * Get addon call info
+   * @param callId Addon call id
+   */
+  getAddonCallInfo(callId: string): Promise<AddonCallInfo>;
+
+  /**
+   * Write to addon log. Only for addons!
+   *
+   * @param bookId Book id
+   * @param status Status
+   * @param message Message
+   * @param data Additional data object
+   */
+  writeAddonLog(
+    bookId: string,
+    status: LogStatus,
+    message: string,
+    data?: object
+  ): Promise<void>;
+
+  /**
+   * Get addon log.
+   *
+   * @param bookId Book id
+   * @param addonId Addon id (optional, if not set, returns own logs)
+   */
+  getAddonLog(bookId: string, addonId?: string): Promise<AddonLogDto[]>;
+
+  /**
+   * Set addon data. Only for addons!
+   * @param bookId Book id
+   * @param key Key
+   * @param data Data object
+   */
+  saveData(bookId: string, key: string, data: object): Promise<void>;
+
+  /**
+   * Get addon data. Only for addons!
+   * @param bookId Book id
+   * @param key Key
+   */
+  getData(bookId: string, key: string): Promise<object>;
+
+  /**
+   * Add a notification. Only for addons!
+   *
+   * @param bookId Book id
+   * @param type Notification type (info, warning, error)
+   * @param title Notification title
+   * @param text Notification content text
+   * @param category Category (optional) for replacing notifications
+   */
+  addNotification(
+    bookId: string,
+    type: NotificationType,
+    title: LanguageString,
+    text: LanguageString,
+    category?: string
+  ): Promise<void>;
+
+  /**
+   * Get notifications.
+   *
+   * @param bookId Book id
+   * @param addonId Addon id
+   */
+  getNotifications(bookId: string, addonId?: string): Promise<Notification[]>;
 }

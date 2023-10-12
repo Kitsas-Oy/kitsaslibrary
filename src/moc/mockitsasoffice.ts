@@ -4,6 +4,7 @@ import { KitsasOfficeInterface } from '../interfaces/kitsasoffice.interface';
 import { LanguageString, OfficeRole } from '../types';
 import { BookListItem } from '../types/books';
 import { Bookshelf, UserGroup } from '../types/office';
+import { UserListItem } from '../types/user';
 
 export class MockKitsasOffice implements KitsasOfficeInterface {
   constructor(id: string) {
@@ -137,5 +138,17 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
 
   getUserGroups(): UserGroup[] {
     return this.UserGroups;
+  }
+
+  getUsers(): Promise<UserListItem[]> {
+    return new Promise<UserListItem[]>((resolve) => {
+      resolve([
+        {
+          id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          name: 'Katja Käyttäjä',
+          group: 'ae50086e204b4b88911389d48ce4a28e',
+        },
+      ]);
+    });
   }
 }
