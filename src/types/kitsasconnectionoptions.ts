@@ -1,7 +1,7 @@
 export class KitsasConnectionOptions {
   /**
    * Kitsas API Base URL
-   * @default process.env.KITSAS_URL or  https://api.kitsas.com
+   * @default process.env.KITSAS_URL or  https://api.kitsas.fi
    */
   url?: string | undefined = undefined;
   /**

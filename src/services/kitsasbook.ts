@@ -1,7 +1,14 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import FormData from 'form-data';
 
 import { KitsasBookInterface } from '../interfaces/kitsasbook.interface';
-import { FiscalYear } from '../types';
+import {
+  Account,
+  AttachmentDto,
+  CreateVoucherDto,
+  CreateVoucherResponseDto,
+  FiscalYear,
+} from '../types';
 
 import { KitsasConnection } from './kitsasconnection';
 
@@ -31,11 +38,36 @@ export class KitsasBook implements KitsasBookInterface {
     return this.bookId;
   }
 
+  async getAccounts(): Promise<Account[]> {
+    const { data } = await axios.get<Account[]>(
+      '/v1/accounts',
+      await this.getConfig()
+    );
+    return data;
+  }
+
   async getFiscalYears(): Promise<FiscalYear[]> {
     const { data } = await axios.get<FiscalYear[]>(
       '/v1/fiscalyears',
       await this.getConfig()
     );
     return data;
+  }
+
+  async saveVoucher(
+    voucher: CreateVoucherDto,
+    attachments: AttachmentDto[]
+  ): Promise<string> {
+    const form = new FormData();
+    form.append('voucher', JSON.stringify(voucher));
+    for (const attachment of attachments) {
+      form.append('attachments', attachment.content, attachment.fileName);
+    }
+    const { data } = await axios.post<CreateVoucherResponseDto>(
+      '/v1/vouchers',
+      form,
+      await this.getConfig()
+    );
+    return data.id;
   }
 }

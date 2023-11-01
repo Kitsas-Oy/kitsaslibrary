@@ -1,15 +1,29 @@
 import { KitsasBookInterface } from '../interfaces/kitsasbook.interface';
-import { FiscalYear } from '../types';
+import { Account, CreateVoucherDto, FiscalYear } from '../types';
 
 export class MockKitsasBook implements KitsasBookInterface {
   constructor(id: string) {
     this.bookId = id;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  saveVoucher(_voucher: CreateVoucherDto): Promise<string> {
+    return Promise.resolve('fb6a9d86-278d-4f69-8887-b4f0b587a7cd');
   }
 
   private bookId: string;
 
   getBookId(): string {
     return this.bookId;
+  }
+
+  getAccounts(): Promise<Account[]> {
+    return Promise.resolve([
+      {
+        number: '31000',
+        name: { fi: 'Myynti', sv: 'Försäljning', en: 'Sales' },
+        typeCode: 'C',
+      },
+    ]);
   }
 
   async getFiscalYears(): Promise<FiscalYear[]> {

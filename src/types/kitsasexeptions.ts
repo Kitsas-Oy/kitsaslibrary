@@ -10,6 +10,12 @@ export class TFARequiredError extends Error {
   }
 }
 
+export class RefreshExpiredError extends Error {
+  constructor() {
+    super('Token expired');
+  }
+}
+
 export class NetworkError extends Error {
   constructor(message: string) {
     super(message);

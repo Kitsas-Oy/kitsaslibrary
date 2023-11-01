@@ -1,10 +1,6 @@
-import axios, { AxiosError, AxiosRequestConfig } from 'axios';
-
 import { KitsasConnectionInterface } from '../interfaces';
 import { MockKitsasService } from '../moc/mockitsasservice';
-import * as Responses from '../types/authresponse';
 import { KitsasConnectionOptions } from '../types/kitsasconnectionoptions';
-import * as Exceptions from '../types/kitsasexeptions';
 
 import { KitsasConnection } from './kitsasconnection';
 
@@ -30,58 +26,20 @@ export class KitsasService {
       return MockKitsasService.connect(options);
     }
 
-    const payload = {
-      username: options.username || (process && process.env.KITSAS_USERNAME),
-      password: options.password || (process && process.env.KITSAS_PASSWORD),
-    };
-
-    const config = this.makeConfig(options);
-    const URL = '/v1/login';
-
-    try {
-      const response = await (options.token
-        ? axios.get<Responses.AuthResponse>(URL, config)
-        : axios.post<Responses.AuthResponse>(URL, payload, config));
-      return new KitsasConnection(
-        config.baseURL as string,
-        options.agent || process.env.KITSAS_AGENT || 'KitsasLibrary',
-        response.data
-      );
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError<Responses.ErrorResponse>;
-        if (axiosError.response?.data?.message === 'Invalid credentials') {
-          throw new Exceptions.InvalidCredentialsError();
-        } else if (axiosError.response?.data?.message === '2FA required') {
-          throw new Exceptions.TFARequiredError();
-        } else {
-          throw new Exceptions.NetworkError(
-            axiosError.response?.data?.message || axiosError.message
-          );
-        }
-      } else {
-        throw error;
-      }
+    if (!options.url) {
+      options.url = process?.env?.KITSAS_URL ?? 'https://api.kitsas.fi';
     }
-  }
+    if (!options.username && process) {
+      options.username = process?.env?.KITSAS_USERNAME;
+    }
+    if (!options.password && process) {
+      options.password = process?.env?.KITSAS_PASSWORD;
+    }
+    if (!options.agent && process) {
+      options.agent = process?.env?.KITSAS_AGENT ?? 'KitsasLibrary';
+    }
 
-  static makeConfig(options: KitsasConnectionOptions): AxiosRequestConfig {
-    const baseURL =
-      options.url ||
-      (process && process.env.KITSAS_URL) ||
-      'https://hub.kitsas.fi';
-
-    const agent =
-      options.agent || (process && process.env.KITSAS_AGENT) || 'KitsasLibrary';
-
-    const config: AxiosRequestConfig = {
-      baseURL: baseURL,
-      headers: {
-        'User-Agent': agent,
-        Authorization: options.token ? `Bearer ${options.token}` : undefined,
-      },
-    };
-
-    return config;
+    const response = await KitsasConnection.login(options);
+    return new KitsasConnection(options, response);
   }
 }

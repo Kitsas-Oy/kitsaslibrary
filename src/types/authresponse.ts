@@ -1,6 +1,7 @@
-export class AuthResponse {
-  access_token = '';
-  name = '';
+export interface AuthResponse {
+  access_token: string;
+  name: string;
+  expires_in: number;
 }
 
 export class ErrorResponse {

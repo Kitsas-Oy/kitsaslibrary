@@ -1,5 +1,3 @@
-import { randomUUID } from 'crypto';
-
 import { KitsasOfficeInterface } from '../interfaces/kitsasoffice.interface';
 import { LanguageString, OfficeRole } from '../types';
 import { BookListItem } from '../types/books';
@@ -97,7 +95,7 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
   addRole(name: LanguageString, rights: string[]): Promise<OfficeRole> {
     return new Promise<OfficeRole>((resolve) => {
       const role: OfficeRole = {
-        id: randomUUID(),
+        id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
         rights,
         name,
       };

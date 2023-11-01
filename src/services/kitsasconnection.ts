@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 import { KitsasConnectionInterface } from '../interfaces';
 import { KitsasBookInterface } from '../interfaces/kitsasbook.interface';
@@ -8,13 +8,16 @@ import {
   AddonInfoDto,
   AddonListedDto,
   AddonLogDto,
+  KitsasConnectionOptions,
   LanguageString,
   LogStatus,
   Notification,
   NotificationType,
 } from '../types';
 import { AuthResponse } from '../types/authresponse';
+import * as Responses from '../types/authresponse';
 import { AddBookResponse, BookListItem } from '../types/books';
+import * as Exceptions from '../types/kitsasexeptions';
 import { Office, OfficeInList, OfficeUser } from '../types/office';
 import { PermissionPatch, Right } from '../types/rights';
 
@@ -22,27 +25,80 @@ import { KitsasBook } from './kitsasbook';
 import { KitsasOffice } from './kitsasoffice';
 
 export class KitsasConnection implements KitsasConnectionInterface {
-  constructor(baseapi: string, agent: string, response: AuthResponse) {
-    this.baseURL = baseapi;
-    this.agent = agent;
+  constructor(options: KitsasConnectionOptions, response: AuthResponse) {
+    this.options = options;
     this.token = response.access_token;
+    this.expiresAt = Date.now() / 1000 + response.expires_in;
     this.name = response.name;
   }
 
+  private options: KitsasConnectionOptions;
   private token: string;
-  private baseURL: string;
-  private agent: string;
+  private expiresAt: number;
   private name: string;
 
-  async getConfig(): Promise<AxiosRequestConfig> {
+  static async login(options: KitsasConnectionOptions) {
+    const payload = {
+      username: options.username,
+      password: options.password,
+      code: options.code,
+    };
+
     const config: AxiosRequestConfig = {
-      baseURL: this.baseURL,
+      baseURL: options.url,
       headers: {
-        'User-Agent': this.agent,
+        'User-Agent': options.agent,
+        Authorization: options.token && 'Bearer ' + options.token,
+      },
+    };
+
+    try {
+      const { data } = await (options.token
+        ? axios.get<AuthResponse>('/v1/login', config)
+        : axios.post<AuthResponse>('/v1/login', payload, config));
+      delete options.token;
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<Responses.ErrorResponse>;
+        if (axiosError.response?.data?.message === 'Invalid credentials') {
+          throw new Exceptions.InvalidCredentialsError();
+        } else if (axiosError.response?.data?.message === '2FA required') {
+          throw new Exceptions.TFARequiredError();
+        } else {
+          throw new Exceptions.NetworkError(
+            axiosError.response?.data?.message || axiosError.message
+          );
+        }
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  async getConfig(): Promise<AxiosRequestConfig> {
+    if (Date.now() / 1000 + 30 > this.expiresAt) {
+      await this.refresh();
+    }
+    const config: AxiosRequestConfig = {
+      baseURL: this.options.url,
+      headers: {
+        'User-Agent': this.options.agent,
         Authorization: 'Bearer ' + this.token,
       },
     };
     return config;
+  }
+
+  async refresh(): Promise<void> {
+    if (Date.now() / 1000 + 30 < this.expiresAt) {
+      this.options.token = this.token;
+    } else if (!this.options.username || !this.options.password) {
+      throw new Exceptions.RefreshExpiredError();
+    }
+    const response = await KitsasConnection.login(this.options);
+    this.token = response.access_token;
+    this.expiresAt = Date.now() / 1000 + response.expires_in;
   }
 
   getName(): string {
@@ -50,11 +106,11 @@ export class KitsasConnection implements KitsasConnectionInterface {
   }
 
   getBaseURL(): string {
-    return this.baseURL;
+    return this.options.url ?? 'https://api.kitsas.fi';
   }
 
-  getAgent(): string {
-    return this.agent;
+  getAgent(): string | undefined {
+    return this.options.agent;
   }
 
   async getOffices(): Promise<OfficeInList[]> {
@@ -106,7 +162,7 @@ export class KitsasConnection implements KitsasConnectionInterface {
       planId,
     };
     const { data } = await axios.post<AddBookResponse>(
-      `/v1/books/${bookshelfId}`,
+      `/v1/books/`,
       payload,
       await this.getConfig()
     );

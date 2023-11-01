@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { randomUUID } from 'crypto';
 
 import { KitsasConnectionInterface } from '../interfaces';
 import { KitsasBookInterface } from '../interfaces/kitsasbook.interface';
@@ -377,7 +376,7 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
   ): Promise<AddBookResponse> {
     return new Promise((resolve) => {
       resolve({
-        id: randomUUID(),
+        id: '1dcb9463-829f-4369-9861-ae2ce7041f03',
         name: name,
         businessId: businessId,
       });
@@ -395,11 +394,11 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
     return new Promise((resolve) => {
       resolve({
         user: {
-          id: randomUUID(),
+          id: '58011d04-1be6-4f26-a4ec-e00da4e78e20',
           name: 'Test User',
         },
         organization: {
-          id: randomUUID(),
+          id: 'ec48e945-c961-48f6-a424-60bee35074c4',
           name: 'Test Organization',
         },
         rights: ['Ts', 'Tl'],
@@ -411,7 +410,7 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
     return new Promise((resolve) => {
       resolve([
         {
-          id: randomUUID(),
+          id: 'e5c726c6-7614-454e-be5f-5792e7cd7bc7',
           name: {
             fi: 'Test Addon',
           },
@@ -429,7 +428,7 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
           fi: 'Test Addon',
         },
         url: 'https://example.com',
-        callId: randomUUID(),
+        callId: 'eb6674d7-bbcb-41d9-8d78-9f8e22748610',
         rights: ['Ts', 'Tl'],
       });
     });
@@ -503,7 +502,7 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
     return new Promise<Notification[]>((resolve) => {
       resolve([
         {
-          id: randomUUID(),
+          id: '8a1c6496-ba11-4659-9c0f-1b5e485a911b',
           type: NotificationType.INFO,
           title: {
             fi: 'Test Notification',

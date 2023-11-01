@@ -51,6 +51,6 @@ const book = await connection.getBook('92e71a5d-1c33-4cc9-aa83-281c05c8e4c2');
 ### Create and save a new document
 
 ```typescript
-const document = book.newDocument();
-await document.save();
+const document : CreateVoucherDto = { ... } ;
+await book.saveVoucher(document, []);
 ```

@@ -1,6 +1,6 @@
 {
   "name": "kitsas-library",
-  "version": "0.1.12",
+  "version": "0.1.17",
   "description": "KitsasHub Client Library",
   "main": "lib/main/index.js",
   "typings": "lib/main/index.d.ts",
@@ -87,6 +87,7 @@
     ]
   },
   "dependencies": {
-    "axios": "^1.5.1"
+    "axios": "^1.5.1",
+    "form-data": "^4.0.0"
   }
 }
