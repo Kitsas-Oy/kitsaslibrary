@@ -49,6 +49,7 @@ export interface CreateVoucherDto {
   entries: CreateVoucherEntryDto[];
   contraEntry: CreateVoucherContraEntryDto;
   partner?: CreateVoucherPartnerDto;
+  note?: string;
 }
 
 export interface CreateVoucherResponseDto {
