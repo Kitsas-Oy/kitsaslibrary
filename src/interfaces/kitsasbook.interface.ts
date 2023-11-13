@@ -1,9 +1,16 @@
-import { Account, AttachmentDto, CreateVoucherDto, FiscalYear } from '../types';
+import {
+  Account,
+  AttachmentDto,
+  CreateVoucherDto,
+  Dimension,
+  FiscalYear,
+} from '../types';
 
 export interface KitsasBookInterface {
   getBookId(): string;
 
   getAccounts(): Promise<Account[]>;
+  getDimensions(): Promise<Dimension[]>;
   getFiscalYears(): Promise<FiscalYear[]>;
 
   saveVoucher(

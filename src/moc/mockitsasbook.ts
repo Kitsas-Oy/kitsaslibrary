@@ -1,9 +1,43 @@
 import { KitsasBookInterface } from '../interfaces/kitsasbook.interface';
-import { Account, CreateVoucherDto, FiscalYear } from '../types';
+import {
+  Account,
+  CreateVoucherDto,
+  Dimension,
+  DimensionType,
+  FiscalYear,
+} from '../types';
 
 export class MockKitsasBook implements KitsasBookInterface {
   constructor(id: string) {
     this.bookId = id;
+  }
+  getDimensions(): Promise<Dimension[]> {
+    return Promise.resolve([
+      {
+        id: '0',
+        name: { fi: 'Yleinen', sv: 'Allmän', en: 'General' },
+        type: DimensionType.DEFAULT,
+      },
+      {
+        id: '1',
+        name: {
+          fi: 'Kustannuspaikka',
+          sv: 'Kostnadsställe',
+          en: 'Cost center',
+        },
+        type: DimensionType.CONSTCENTRE,
+      },
+      {
+        id: '2',
+        name: { fi: 'Projekti', sv: 'Projekt', en: 'Project' },
+        type: DimensionType.PROJECT,
+      },
+      {
+        id: '3',
+        name: { fi: 'Kohdistus', sv: 'Markering', en: 'Marking' },
+        type: DimensionType.MARKING,
+      },
+    ]);
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   saveVoucher(_voucher: CreateVoucherDto): Promise<string> {

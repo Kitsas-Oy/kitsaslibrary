@@ -7,6 +7,7 @@ import {
   AttachmentDto,
   CreateVoucherDto,
   CreateVoucherResponseDto,
+  Dimension,
   FiscalYear,
 } from '../types';
 
@@ -41,6 +42,14 @@ export class KitsasBook implements KitsasBookInterface {
   async getAccounts(): Promise<Account[]> {
     const { data } = await axios.get<Account[]>(
       '/v1/accounts',
+      await this.getConfig()
+    );
+    return data;
+  }
+
+  async getDimensions(): Promise<Dimension[]> {
+    const { data } = await axios.get<Dimension[]>(
+      '/v1/dimensions',
       await this.getConfig()
     );
     return data;

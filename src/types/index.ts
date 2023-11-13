@@ -7,4 +7,5 @@ export * from './addon';
 export * from './notification';
 export * from './fiscalyear';
 export * from './account';
+export * from './dimension';
 export * from './voucher';

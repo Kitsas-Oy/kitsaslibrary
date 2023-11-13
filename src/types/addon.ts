@@ -27,9 +27,10 @@ export interface AddonInfoDto {
 }
 
 export enum LogStatus {
-  OK = 'OK',
-  ERROR = 'ERROR',
+  SUCCESS = 'SUCCESS',
+  INFO = 'INFO',
   WARNING = 'WARNING',
+  ERROR = 'ERROR',
 }
 
 export interface AddonLogWriteDto {

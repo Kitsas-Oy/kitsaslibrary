@@ -2,6 +2,7 @@ export enum VoucherType {
   INCOME = 'INCOME',
   EXPENSE = 'EXPENSE',
   BILLOFCOSTS = 'BILLOFCOSTS',
+  OTHER = 'OTHER',
 }
 
 export enum VoucherStatus {
@@ -27,6 +28,7 @@ export interface CreateVoucherEntryDto {
   amount: string;
   vatPercent?: string;
   vatCode?: VatCode;
+  dimensions?: string[];
 }
 
 export interface CreateVoucherContraEntryDto {
@@ -47,8 +49,9 @@ export interface CreateVoucherDto {
   title?: string;
   status: VoucherStatus;
   entries: CreateVoucherEntryDto[];
-  contraEntry: CreateVoucherContraEntryDto;
+  contraEntry?: CreateVoucherContraEntryDto;
   partner?: CreateVoucherPartnerDto;
+  dimensions?: string[];
   note?: string;
 }
 

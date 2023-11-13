@@ -449,7 +449,7 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
     return new Promise<AddonLogDto[]>((resolve) => {
       resolve([
         {
-          status: LogStatus.OK,
+          status: LogStatus.SUCCESS,
           message: 'Test message',
           timestamp: new Date(),
         },
