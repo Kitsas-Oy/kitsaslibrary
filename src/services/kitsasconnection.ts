@@ -16,7 +16,11 @@ import {
 } from '../types';
 import { AuthResponse } from '../types/authresponse';
 import * as Responses from '../types/authresponse';
-import { AddBookResponse, BookListItem } from '../types/books';
+import {
+  AddBookResponse,
+  BookListItem,
+  OrganizationStatusResponse,
+} from '../types/books';
 import * as Exceptions from '../types/kitsasexeptions';
 import { Office, OfficeInList, OfficeUser } from '../types/office';
 import { PermissionPatch, Right } from '../types/rights';
@@ -294,6 +298,16 @@ export class KitsasConnection implements KitsasConnectionInterface {
     const { data } = await axios.get<Notification[]>(
       `/v1/notifications?bookId=${bookId}` +
         (addonId ? `&addonId=${addonId}` : ''),
+      await this.getConfig()
+    );
+    return data;
+  }
+
+  async getOrganizationStatus(
+    businessId: string
+  ): Promise<OrganizationStatusResponse> {
+    const { data } = await axios.get<OrganizationStatusResponse>(
+      `/v1/books/status/${businessId}`,
       await this.getConfig()
     );
     return data;

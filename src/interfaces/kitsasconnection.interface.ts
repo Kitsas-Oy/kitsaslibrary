@@ -9,7 +9,11 @@ import {
   NotificationType,
   Right,
 } from '../types';
-import { AddBookResponse, BookListItem } from '../types/books';
+import {
+  AddBookResponse,
+  BookListItem,
+  OrganizationStatusResponse,
+} from '../types/books';
 import { OfficeInList, OfficeUser } from '../types/office';
 import { PermissionPatch } from '../types/rights';
 
@@ -62,6 +66,14 @@ export interface KitsasConnectionInterface {
    * @param bookId
    */
   getBook(bookId: string): Promise<KitsasBookInterface>;
+
+  /**
+   * Get organization status (FREE, ACTIVE, INVALID) and registered name
+   * @param businessId Business id
+   */
+  getOrganizationStatus(
+    businessId: string
+  ): Promise<OrganizationStatusResponse>;
 
   /**
    * List users and their roles

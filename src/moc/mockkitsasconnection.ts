@@ -15,7 +15,12 @@ import {
   Right,
 } from '../types';
 import { AuthResponse } from '../types/authresponse';
-import { AddBookResponse, BookListItem } from '../types/books';
+import {
+  AddBookResponse,
+  BookListItem,
+  OrganizationStatus,
+  OrganizationStatusResponse,
+} from '../types/books';
 import { OfficeInList, OfficeUser } from '../types/office';
 import { PermissionPatch } from '../types/rights';
 
@@ -518,4 +523,29 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
   }
 
   private name: string;
+
+  getOrganizationStatus(
+    businessId: string
+  ): Promise<OrganizationStatusResponse> {
+    return new Promise<OrganizationStatusResponse>((resolve) => {
+      if (businessId === '1234567-8') {
+        resolve({
+          status: OrganizationStatus.INVALID,
+          businessId: businessId,
+        });
+      } else if (businessId === '3093902-7') {
+        resolve({
+          status: OrganizationStatus.ACTIVE,
+          businessId: businessId,
+          name: 'Kitsas Oy',
+          companyForm: 'OY',
+        });
+      } else {
+        resolve({
+          status: OrganizationStatus.FREE,
+          businessId: businessId,
+        });
+      }
+    });
+  }
 }
