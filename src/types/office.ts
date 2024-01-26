@@ -10,6 +10,7 @@ export interface OfficeRole {
   id: string;
   name: LanguageString;
   rights: string[];
+  system: boolean;
 }
 
 export interface OfficeRoleAdd {

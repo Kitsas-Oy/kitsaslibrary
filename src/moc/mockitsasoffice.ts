@@ -19,6 +19,7 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
         en: 'User',
         sv: 'Användare',
       },
+      system: false,
     },
   ];
 
@@ -98,6 +99,7 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
         id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
         rights,
         name,
+        system: false,
       };
       this.roles.push(role);
       resolve(role);

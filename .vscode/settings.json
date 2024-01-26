@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["Kitsas"]
+  "cSpell.words": ["Kitsas"],
+  "cmake.configureOnOpen": true
 }
