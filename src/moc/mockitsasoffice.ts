@@ -2,7 +2,7 @@ import { KitsasOfficeInterface } from '../interfaces/kitsasoffice.interface';
 import { LanguageString, OfficeRole } from '../types';
 import { BookListItem } from '../types/books';
 import { Bookshelf } from '../types/office';
-import { UserListItem } from '../types/user';
+import { UserListItem, UserMode } from '../types/user';
 
 export class MockKitsasOffice implements KitsasOfficeInterface {
   constructor(id: string) {
@@ -57,6 +57,12 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
     return '1234567-8';
   }
 
+  refresh(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      resolve();
+    });
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getBooks(_bookshelfId?: string): Promise<BookListItem[]> {
     return new Promise<BookListItem[]>((resolve) => {
@@ -91,6 +97,69 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
 
   getBookshelves(): Bookshelf[] {
     return this.bookshelves;
+  }
+
+  private static findBookShelf(
+    id: string,
+    bookshelves: Bookshelf[]
+  ): Bookshelf | undefined {
+    for (const bookshelf of bookshelves) {
+      if (bookshelf.id === id) {
+        return bookshelf;
+      }
+      const sub = this.findBookShelf(id, bookshelf.subgroups);
+      if (sub) {
+        return sub;
+      }
+    }
+    return undefined;
+  }
+
+  addBookshelf(
+    name: string,
+    parentId?: string | undefined
+  ): Promise<Bookshelf> {
+    return new Promise<Bookshelf>((resolve) => {
+      const bookshelf: Bookshelf = {
+        id: '8c742657-5613-4065-8173-2ba01bd28f36',
+        name,
+        rights: ['A', 'O', 'OB', 'OD', 'OG', 'OL', 'OM', 'OP', 'OS', 'OT'],
+        subgroups: [],
+      };
+      if (parentId) {
+        const parent = MockKitsasOffice.findBookShelf(
+          parentId,
+          this.bookshelves
+        );
+        if (parent) {
+          parent.subgroups.push(bookshelf);
+          this.bookshelves = this.bookshelves.map((shelf) =>
+            shelf.id === parentId ? parent : shelf
+          );
+        }
+      } else {
+        this.bookshelves.push(bookshelf);
+      }
+      resolve(bookshelf);
+    });
+  }
+
+  deleteBookshelf(id: string): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.bookshelves = this.bookshelves.filter((shelf) => shelf.id !== id);
+      resolve();
+    });
+  }
+
+  renameBookshelf(id: string, name: string): Promise<Bookshelf> {
+    return new Promise<Bookshelf>((resolve) => {
+      const bookshelf = MockKitsasOffice.findBookShelf(id, this.bookshelves);
+      if (!bookshelf) {
+        throw new Error('Bookshelf not found');
+      }
+      bookshelf.name = name;
+      resolve(bookshelf);
+    });
   }
 
   addRole(name: LanguageString, rights: string[]): Promise<OfficeRole> {
@@ -135,9 +204,34 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
         {
           id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
           name: 'Katja Käyttäjä',
-          group: 'ae50086e204b4b88911389d48ce4a28e',
+          email: 'katja@testi.fi',
+          mode: UserMode.PRO,
         },
       ]);
+    });
+  }
+
+  addUser(
+    name: string,
+    email: string,
+    customer: boolean,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _invite: boolean
+  ): Promise<UserListItem> {
+    return new Promise<UserListItem>((resolve) => {
+      resolve({
+        id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        name,
+        email,
+        mode: customer ? UserMode.CUSTOMER : UserMode.PRO,
+      });
+    });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  deleteUser(_id: string): Promise<void> {
+    return new Promise<void>((resolve) => {
+      resolve();
     });
   }
 }

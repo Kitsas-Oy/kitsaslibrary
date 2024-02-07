@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import dayJs from 'dayjs';
 import FormData from 'form-data';
 
 import { KitsasBookInterface } from '../interfaces/kitsasbook.interface';
@@ -10,6 +11,9 @@ import {
   Dimension,
   FiscalYear,
 } from '../types';
+import { CreateInvoiceResponseDto, InvoiceDto } from '../types/invoice';
+import { Product } from '../types/product';
+import { AddTransactionsDto, TransactionEntryDto } from '../types/transactions';
 
 import { KitsasConnection } from './kitsasconnection';
 
@@ -66,7 +70,7 @@ export class KitsasBook implements KitsasBookInterface {
   async saveVoucher(
     voucher: CreateVoucherDto,
     attachments: AttachmentDto[]
-  ): Promise<string> {
+  ): Promise<CreateVoucherResponseDto> {
     const form = new FormData();
     form.append('voucher', JSON.stringify(voucher));
     for (const attachment of attachments) {
@@ -77,6 +81,53 @@ export class KitsasBook implements KitsasBookInterface {
       form,
       await this.getConfig()
     );
-    return data.id;
+    return data;
+  }
+
+  async saveInvoice(
+    invoice: InvoiceDto,
+    attachments: AttachmentDto[]
+  ): Promise<CreateInvoiceResponseDto> {
+    const form = new FormData();
+    form.append('invoice', JSON.stringify(invoice));
+    for (const attachment of attachments) {
+      form.append('attachments', attachment.content, attachment.fileName);
+    }
+    const { data } = await axios.post<CreateInvoiceResponseDto>(
+      '/v1/invoices',
+      form,
+      await this.getConfig()
+    );
+    return data;
+  }
+
+  async saveTransactions(
+    iban: string,
+    startDate: Date,
+    endDate: Date,
+    entries: TransactionEntryDto[],
+    original: object
+  ): Promise<CreateVoucherResponseDto> {
+    const payload: AddTransactionsDto = {
+      iban,
+      startDate: dayJs(startDate).format('YYYY-MM-DD'),
+      endDate: dayJs(endDate).format('YYYY-MM-DD'),
+      entries,
+      original,
+    };
+    const { data } = await axios.post<CreateVoucherResponseDto>(
+      '/v1/transactions',
+      payload,
+      await this.getConfig()
+    );
+    return data;
+  }
+
+  async getProducts(): Promise<Product[]> {
+    const { data } = await axios.get<Product[]>(
+      '/v1/products',
+      await this.getConfig()
+    );
+    return data;
   }
 }

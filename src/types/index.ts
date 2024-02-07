@@ -9,3 +9,8 @@ export * from './fiscalyear';
 export * from './account';
 export * from './dimension';
 export * from './voucher';
+export * from './invoice';
+export * from './product';
+export * from './transactions';
+export * from './kitsasexeptions';
+export * from './roles';

@@ -16,6 +16,7 @@ import {
 } from '../types/books';
 import { OfficeInList, OfficeUser } from '../types/office';
 import { PermissionPatch } from '../types/rights';
+import { UserListItem } from '../types/user';
 
 import { KitsasBookInterface } from './kitsasbook.interface';
 import { KitsasOfficeInterface } from './kitsasoffice.interface';
@@ -40,11 +41,12 @@ export interface KitsasConnectionInterface {
   getOffice(id: string): Promise<KitsasOfficeInterface>;
 
   /**
-   * Get list of books
-   * @param target Office, user or bookshelf id
+   * Get list of books user has access to
+   * To list book of a specific office, use getOffice(id).getBooks()
+   * To list books of a specific bookshelf, use getOffice(id).getBooks(bookshelfId)
    * @returns List of books
    */
-  getBooks(target?: string): Promise<BookListItem[]>;
+  getBooks(): Promise<BookListItem[]>;
 
   /**
    * Add a new book (organization for bookkeeping)
@@ -66,6 +68,12 @@ export interface KitsasConnectionInterface {
    * @param bookId
    */
   getBook(bookId: string): Promise<KitsasBookInterface>;
+
+  /**
+   * Delete a book
+   * @param bookId
+   */
+  deleteBook(bookId: string): Promise<void>;
 
   /**
    * Get organization status (FREE, ACTIVE, INVALID) and registered name
@@ -181,4 +189,10 @@ export interface KitsasConnectionInterface {
    * @param addonId Addon id
    */
   getNotifications(bookId: string, addonId?: string): Promise<Notification[]>;
+
+  /**
+   * Find user by email
+   * @param email Email address
+   */
+  findUserByEmail(email: string): Promise<UserListItem | undefined>;
 }

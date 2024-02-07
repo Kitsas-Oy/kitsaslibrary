@@ -42,6 +42,10 @@ const connectionWith2FA = await KitsasService.connect({
 const books = await connection.getBooks();
 ```
 
+{@link KitsasBookInterface}
+{@link KitsasOfficeInterface}
+{@link KitsasConnectionInterface}
+
 ### Select a book
 
 ```typescript

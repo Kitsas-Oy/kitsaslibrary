@@ -30,6 +30,11 @@ export interface KitsasOfficeInterface {
   getRoles(): OfficeRole[];
 
   /**
+   * Refresh office data
+   */
+  refresh(): Promise<void>;
+
+  /**
    * Add a role
    *
    * @param name Role name (in languages)
@@ -61,7 +66,50 @@ export interface KitsasOfficeInterface {
   getBookshelves(): Bookshelf[];
 
   /**
+   * Add new bookshelf
+   * @param name Name of bookshelf
+   * @param parentId Id of parent bookshelf, or undefined if top level
+   */
+  addBookshelf(name: string, parentId?: string): Promise<Bookshelf>;
+
+  /**
+   * Remove bookshelf
+   * @param id Bookshelf id
+   */
+  deleteBookshelf(id: string): Promise<void>;
+
+  /**
+   * Rename bookshelf
+   * @param id Bookshelf id
+   * @param name New name for bookshelf
+   */
+  renameBookshelf(id: string, name: string): Promise<Bookshelf>;
+
+  /**
    * Get users of the office
    */
   getUsers(): Promise<UserListItem[]>;
+
+  /**
+   * Add a new user
+   *
+   * User should not exist in the system
+   *
+   * @param name User's name
+   * @param email User's email address
+   * @param customer Is customer of accounting office
+   * @param invite Send invitation email to user
+   */
+  addUser(
+    name: string,
+    email: string,
+    customer: boolean,
+    invite: boolean
+  ): Promise<UserListItem>;
+
+  /**
+   * Delete a user
+   * @param id
+   */
+  deleteUser(id: string): Promise<void>;
 }

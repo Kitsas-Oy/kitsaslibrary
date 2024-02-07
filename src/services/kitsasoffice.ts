@@ -29,9 +29,19 @@ export class KitsasOffice implements KitsasOfficeInterface {
     return this.data.businessId;
   }
 
+  async refresh(): Promise<void> {
+    const { data } = await axios.get<Office>(
+      `/v1/offices/${this.data.id}`,
+      await this.connection.getConfig()
+    );
+    this.data = data;
+  }
+
   async getBooks(bookshelfId?: string): Promise<BookListItem[]> {
     const { data } = await axios.get<BookListItem[]>(
-      '/v1/books?target=' + (bookshelfId ?? this.data.id),
+      bookshelfId
+        ? '/v1/books?bookshelf=' + bookshelfId
+        : '/v1/books?office=' + this.data.id,
       await this.connection.getConfig()
     );
     return data;
@@ -45,6 +55,69 @@ export class KitsasOffice implements KitsasOfficeInterface {
     return this.data.bookshelves;
   }
 
+  private static findBookShelf(
+    id: string,
+    bookshelves: Bookshelf[]
+  ): Bookshelf | undefined {
+    for (const bookshelf of bookshelves) {
+      if (bookshelf.id === id) {
+        return bookshelf;
+      }
+      const sub = this.findBookShelf(id, bookshelf.subgroups);
+      if (sub) {
+        return sub;
+      }
+    }
+    return undefined;
+  }
+
+  async addBookshelf(
+    name: string,
+    parentId?: string | undefined
+  ): Promise<Bookshelf> {
+    const payload = { name };
+    const { data } = await axios.post<Bookshelf>(
+      `/v1/bookshelves/${parentId ?? this.getId()}`,
+      payload,
+      await this.connection.getConfig()
+    );
+    await this.refresh();
+    const bookshelf = KitsasOffice.findBookShelf(
+      data.id,
+      this.data.bookshelves
+    );
+    if (!bookshelf) {
+      throw new Error('Bookshelf not found');
+    }
+    return bookshelf;
+  }
+
+  async renameBookshelf(id: string, name: string): Promise<Bookshelf> {
+    const payload = { name };
+    const { data } = await axios.put<Bookshelf>(
+      `/v1/bookshelves/${id}`,
+      payload,
+      await this.connection.getConfig()
+    );
+    await this.refresh();
+    const bookshelf = KitsasOffice.findBookShelf(
+      data.id,
+      this.data.bookshelves
+    );
+    if (!bookshelf) {
+      throw new Error('Bookshelf not found');
+    }
+    return bookshelf;
+  }
+
+  async deleteBookshelf(id: string): Promise<void> {
+    await axios.delete(
+      `/v1/bookshelves/${id}`,
+      await this.connection.getConfig()
+    );
+    await this.refresh();
+  }
+
   async addRole(name: LanguageString, rights: string[]): Promise<OfficeRole> {
     const payload: OfficeRoleAdd = { name, rights };
     const { data } = await axios.post<OfficeRole>(
@@ -52,7 +125,7 @@ export class KitsasOffice implements KitsasOfficeInterface {
       payload,
       await this.connection.getConfig()
     );
-    this.data.roles.push(data);
+    await this.refresh();
     return data;
   }
 
@@ -67,18 +140,13 @@ export class KitsasOffice implements KitsasOfficeInterface {
       payload,
       await this.connection.getConfig()
     );
-    this.data.roles = this.data.roles.map((r) => {
-      if (r.id === id) {
-        return data;
-      }
-      return r;
-    });
+    await this.refresh();
     return data;
   }
 
   async deleteRole(id: string): Promise<void> {
     await axios.delete(`/v1/roles/${id}`, await this.connection.getConfig());
-    this.data.roles = this.data.roles.filter((r) => r.id !== id);
+    await this.refresh();
   }
 
   async getUsers(): Promise<UserListItem[]> {
@@ -87,5 +155,30 @@ export class KitsasOffice implements KitsasOfficeInterface {
       await this.connection.getConfig()
     );
     return data;
+  }
+
+  async addUser(
+    name: string,
+    email: string,
+    customer: boolean,
+    invite: boolean
+  ): Promise<UserListItem> {
+    const payload = {
+      name,
+      email,
+      customer,
+      officeId: this.data.id,
+      invite: invite,
+    };
+    const { data } = await axios.post<UserListItem>(
+      `/v1/users/`,
+      payload,
+      await this.connection.getConfig()
+    );
+    return data;
+  }
+
+  async deleteUser(id: string): Promise<void> {
+    await axios.delete(`/v1/users/${id}`, await this.connection.getConfig());
   }
 }

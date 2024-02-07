@@ -24,6 +24,7 @@ import {
 import * as Exceptions from '../types/kitsasexeptions';
 import { Office, OfficeInList, OfficeUser } from '../types/office';
 import { PermissionPatch, Right } from '../types/rights';
+import { UserListItem } from '../types/user';
 
 import { KitsasBook } from './kitsasbook';
 import { KitsasOffice } from './kitsasoffice';
@@ -133,9 +134,9 @@ export class KitsasConnection implements KitsasConnectionInterface {
     return new KitsasOffice(data, this);
   }
 
-  async getBooks(target?: string): Promise<BookListItem[]> {
+  async getBooks(): Promise<BookListItem[]> {
     const { data } = await axios.get<BookListItem[]>(
-      '/v1/books' + (target ? '?target=' + target : ''),
+      '/v1/books',
       await this.getConfig()
     );
     return data;
@@ -171,6 +172,10 @@ export class KitsasConnection implements KitsasConnectionInterface {
       await this.getConfig()
     );
     return data;
+  }
+
+  async deleteBook(bookId: string): Promise<void> {
+    await axios.delete(`/v1/books/${bookId}`, await this.getConfig());
   }
 
   async getPermissions(target: string): Promise<OfficeUser[]> {
@@ -311,5 +316,17 @@ export class KitsasConnection implements KitsasConnectionInterface {
       await this.getConfig()
     );
     return data;
+  }
+
+  async findUserByEmail(email: string): Promise<UserListItem | undefined> {
+    const { data } = await axios.get<UserListItem[]>(
+      `/v1/users?email=${email}`,
+      await this.getConfig()
+    );
+    if (data.length === 0) {
+      return undefined;
+    } else {
+      return data[0];
+    }
   }
 }

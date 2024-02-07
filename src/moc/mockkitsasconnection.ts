@@ -23,6 +23,7 @@ import {
 } from '../types/books';
 import { OfficeInList, OfficeUser } from '../types/office';
 import { PermissionPatch } from '../types/rights';
+import { UserListItem, UserMode } from '../types/user';
 
 import { MockKitsasBook } from './mockitsasbook';
 import { MockKitsasOffice } from './mockitsasoffice';
@@ -55,33 +56,7 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
     });
   }
 
-  getBooks(target: string): Promise<BookListItem[]> {
-    if (target) {
-      return new Promise((resolve) => {
-        resolve([
-          {
-            id: '1dcb9463-829f-4369-9861-ae2ce7041f03',
-            name: 'Test Book',
-            businessId: '1234567-8',
-            badges: [],
-            group: {
-              id: target,
-              name: 'Test Bookshelf',
-              type: 'BOOKSHELF',
-            },
-            created: new Date('2023-01-01'),
-            modified: new Date('2023-09-05'),
-            documentCount: 0,
-            backend: 'KITSAS',
-            vat: {
-              dueDate: new Date('2023-10-12'),
-              returnedUntil: new Date('2023-08-31'),
-              period: 1,
-            },
-          },
-        ]);
-      });
-    }
+  getBooks(): Promise<BookListItem[]> {
     return new Promise((resolve) => {
       resolve([
         {
@@ -388,6 +363,12 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
     });
   }
 
+  deleteBook(_bookId: string): Promise<void> {
+    return new Promise((resolve) => {
+      resolve();
+    });
+  }
+
   getBook(bookId: string): Promise<KitsasBookInterface> {
     const book = new MockKitsasBook(bookId);
     return new Promise((resolve) => {
@@ -546,6 +527,17 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
           businessId: businessId,
         });
       }
+    });
+  }
+
+  findUserByEmail(email: string): Promise<UserListItem | undefined> {
+    return new Promise<UserListItem | undefined>((resolve) => {
+      resolve({
+        id: '58011d04-1be6-4f26-a4ec-e00da4e78e20',
+        name: 'Test User',
+        email: email,
+        mode: UserMode.NORMAL,
+      });
     });
   }
 }
