@@ -4,6 +4,36 @@ import { KitsasConnectionOptions } from '../types/kitsasconnectionoptions';
 
 import { KitsasConnection } from './kitsasconnection';
 
+/**
+ * KitsasService is a static class for connecting to Kitsas
+ *
+ * Start by calling KitsasService.connect(options)
+ *
+ * @example
+ * const connection = await KitsasService.connect({
+ *  username: 'user',
+ *  password: 'password',
+ * });
+ *
+ * @see {@link KitsasConnectionOptions} to see connection options
+ * @see {@link KitsasConnectionInterface} interface to continue after connect
+ *
+ * To get a mock connection:
+ *
+ * @example
+ * const connection = await KitsasService.connect({
+ *   username: 'test@kitsas.fi',
+ *   password: 'Test+12345',
+ *   mock: true,
+ * });
+ * const connectionWith2FA = await KitsasService.connect({
+ *   username: 'use2fa@kitsas.fi',
+ *   password: 'Test+12345',
+ *   code: '123456',
+ *   mock: true,
+ * });
+ *
+ */
 export class KitsasService {
   constructor() {
     throw Error('KitsasService is a static class');

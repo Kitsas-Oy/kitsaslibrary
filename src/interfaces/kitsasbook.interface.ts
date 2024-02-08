@@ -12,6 +12,8 @@ import { TransactionEntryDto } from '../types/transactions';
 
 /**
  * Interface representing an accounting of the organization.
+ *
+ * You get KitsasBookInterface from {@link KitsasOfficeInterface.getBooks}
  */
 export interface KitsasBookInterface {
   /**

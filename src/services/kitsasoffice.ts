@@ -3,6 +3,10 @@ import axios from 'axios';
 import { KitsasOfficeInterface } from '../interfaces/kitsasoffice.interface';
 import { LanguageString } from '../types';
 import { BookListItem } from '../types/books';
+import {
+  CertificateFetchResult,
+  CertificateStatusInformation,
+} from '../types/certificate';
 import { Bookshelf, Office, OfficeRole, OfficeRoleAdd } from '../types/office';
 import { UserListItem } from '../types/user';
 
@@ -210,5 +214,28 @@ export class KitsasOffice implements KitsasOfficeInterface {
       throw new Error('Bookshelf not found');
     }
     return bookshelf;
+  }
+
+  getCertificateInformation(): CertificateStatusInformation {
+    return this.data.certificate;
+  }
+
+  async installCertificate(
+    transferId: string,
+    password: string
+  ): Promise<CertificateFetchResult> {
+    const { data } = await axios.post<CertificateFetchResult>(
+      `/v1/cert/` + this.data.id,
+      { transferId, password },
+      await this.connection.getConfig()
+    );
+    return data;
+  }
+
+  async removeCertificate(): Promise<void> {
+    await axios.delete(
+      `/v1/cert/` + this.data.id,
+      await this.connection.getConfig()
+    );
   }
 }

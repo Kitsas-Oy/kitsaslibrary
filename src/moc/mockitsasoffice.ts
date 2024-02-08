@@ -1,6 +1,11 @@
 import { KitsasOfficeInterface } from '../interfaces/kitsasoffice.interface';
 import { LanguageString, OfficeRole } from '../types';
 import { BookListItem } from '../types/books';
+import {
+  CertificateFetchResult,
+  CertificateStatus,
+  CertificateStatusInformation,
+} from '../types/certificate';
 import { Bookshelf } from '../types/office';
 import { UserListItem, UserMode } from '../types/user';
 
@@ -259,6 +264,32 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
       const shelf = MockKitsasOffice.findBookShelf(id, this.bookshelves);
       parent?.subgroups.push(shelf as Bookshelf);
       resolve(shelf as Bookshelf);
+    });
+  }
+
+  getCertificateInformation(): CertificateStatusInformation {
+    return {
+      status: CertificateStatus.MISSING,
+    };
+  }
+
+  installCertificate(
+    transferId: string,
+    password: string
+  ): Promise<CertificateFetchResult> {
+    return new Promise<CertificateFetchResult>((resolve) => {
+      console.log('Install certificate', transferId, password);
+      resolve({
+        status: CertificateStatus.ERROR,
+        error: 'Not implemented in mock',
+      });
+    });
+  }
+
+  removeCertificate(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      console.log('Remove certificate');
+      resolve();
     });
   }
 }

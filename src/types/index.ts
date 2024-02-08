@@ -14,3 +14,4 @@ export * from './product';
 export * from './transactions';
 export * from './kitsasexeptions';
 export * from './roles';
+export * from './certificate';

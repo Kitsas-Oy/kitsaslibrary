@@ -22,6 +22,16 @@ import { UserListItem } from '../types/user';
 import { KitsasBookInterface } from './kitsasbook.interface';
 import { KitsasOfficeInterface } from './kitsasoffice.interface';
 
+/**
+ * Connection to Kitsas Server
+ *
+ * Use {@link KitsasConnection.login} to create a new connection
+ *
+ * You can get {@link KitsasOfficeInterface} from {@link getOffice}
+ * and {@link KitsasBookInterface} from {@link getBook}
+ *
+ *
+ */
 export interface KitsasConnectionInterface {
   /**
    * Get current user's name

@@ -1,7 +1,16 @@
 import { BookListItem, LanguageString } from '../types';
+import {
+  CertificateFetchResult,
+  CertificateStatusInformation,
+} from '../types/certificate';
 import { Bookshelf, OfficeRole } from '../types/office';
 import { UserListItem } from '../types/user';
 
+/**
+ * Interface to office, role and bookshelf management
+ *
+ * You get KitsasOfficeInterface from {@link KitsasConnectionInterface.getOffice}
+ */
 export interface KitsasOfficeInterface {
   /**
    * Get the ID of the office.
@@ -133,4 +142,24 @@ export interface KitsasOfficeInterface {
    * @param planId Plan id
    */
   changePlan(bookId: string, planId: number): Promise<void>;
+
+  /**
+   * Get information about the certificate
+   */
+  getCertificateInformation(): CertificateStatusInformation;
+
+  /**
+   * Fetch a new Tulorekisteri cetificate
+   * @param transferId
+   * @param password
+   */
+  installCertificate(
+    transferId: string,
+    password: string
+  ): Promise<CertificateFetchResult>;
+
+  /**
+   * Remove the current Tulorekisteri cetificate
+   */
+  removeCertificate(): Promise<void>;
 }

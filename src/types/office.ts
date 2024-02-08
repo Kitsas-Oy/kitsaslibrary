@@ -1,3 +1,4 @@
+import { CertificateStatusInformation as CertificateInformation } from './certificate';
 import { LanguageString } from './language';
 
 export interface OfficeInList {
@@ -47,4 +48,5 @@ export interface Office {
   officeType?: string;
   roles: OfficeRole[];
   bookshelves: Bookshelf[];
+  certificate: CertificateInformation;
 }
