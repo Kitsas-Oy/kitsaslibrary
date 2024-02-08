@@ -15,3 +15,4 @@ export * from './transactions';
 export * from './kitsasexeptions';
 export * from './roles';
 export * from './certificate';
+export * from './user';
