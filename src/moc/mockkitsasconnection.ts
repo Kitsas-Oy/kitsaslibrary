@@ -22,7 +22,7 @@ import {
   OrganizationStatus,
   OrganizationStatusResponse,
 } from '../types/books';
-import { OfficeInList, OfficeUser } from '../types/office';
+import { OfficeInList, PermissionUser } from '../types/office';
 import { PermissionPatch } from '../types/rights';
 import { UserListItem, UserMode } from '../types/user';
 
@@ -84,7 +84,7 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
     });
   }
 
-  getPermissions(target: string): Promise<OfficeUser[]> {
+  getPermissions(target: string): Promise<PermissionUser[]> {
     if (target !== '1dcb9463-829f-4369-9861-ae2ce7041f03')
       throw Error('Error getting users');
     return new Promise((resolve) => {

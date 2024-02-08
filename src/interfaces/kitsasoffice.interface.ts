@@ -25,7 +25,7 @@ export interface KitsasOfficeInterface {
   /**
    * Get the business ID of the office.
    */
-  getBusinessId?(): string | undefined;
+  getBusinessId(): string | undefined;
 
   /**
    * Get books (organization for bookkeeping) of the office

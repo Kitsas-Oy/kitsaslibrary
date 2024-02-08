@@ -26,7 +26,7 @@ export interface Bookshelf {
   subgroups: Bookshelf[];
 }
 
-interface OfficeUserTarget {
+interface PermissionUserTarget {
   id: string;
   name: string;
   type: string;
@@ -34,10 +34,11 @@ interface OfficeUserTarget {
   roles: string[];
 }
 
-export interface OfficeUser {
+export interface PermissionUser {
   id: string;
   name: string;
-  targets: OfficeUserTarget[];
+  email?: string;
+  targets: PermissionUserTarget[];
 }
 
 export interface Office {

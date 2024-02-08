@@ -15,7 +15,7 @@ import {
   BookOpenCountItem,
   OrganizationStatusResponse,
 } from '../types/books';
-import { OfficeInList, OfficeUser } from '../types/office';
+import { OfficeInList, PermissionUser } from '../types/office';
 import { PermissionPatch } from '../types/rights';
 import { UserListItem } from '../types/user';
 
@@ -98,7 +98,7 @@ export interface KitsasConnectionInterface {
    * List users and their roles
    * @param target Office, bookshelf or book id
    */
-  getPermissions(target: string): Promise<OfficeUser[]>;
+  getPermissions(target: string): Promise<PermissionUser[]>;
 
   /**
    * Set permissions

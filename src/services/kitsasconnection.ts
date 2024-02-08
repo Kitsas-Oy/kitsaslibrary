@@ -23,7 +23,7 @@ import {
   OrganizationStatusResponse,
 } from '../types/books';
 import * as Exceptions from '../types/kitsasexeptions';
-import { Office, OfficeInList, OfficeUser } from '../types/office';
+import { Office, OfficeInList, PermissionUser } from '../types/office';
 import { PermissionPatch, Right } from '../types/rights';
 import { UserListItem } from '../types/user';
 
@@ -179,8 +179,8 @@ export class KitsasConnection implements KitsasConnectionInterface {
     await axios.delete(`/v1/books/${bookId}`, await this.getConfig());
   }
 
-  async getPermissions(target: string): Promise<OfficeUser[]> {
-    const { data } = await axios.get<OfficeUser[]>(
+  async getPermissions(target: string): Promise<PermissionUser[]> {
+    const { data } = await axios.get<PermissionUser[]>(
       '/v1/permissions?target=' + target,
       await this.getConfig()
     );
