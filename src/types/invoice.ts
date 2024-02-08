@@ -1,4 +1,4 @@
-interface InvoiceArticleDto {
+export interface InvoiceArticleDto {
   id?: string;
 
   code?: string;
@@ -8,7 +8,7 @@ interface InvoiceArticleDto {
   description?: string;
 }
 
-interface InvoiceRowQuantityDto {
+export interface InvoiceRowQuantityDto {
   delivered?: number;
 
   postDelivered?: number;
@@ -38,7 +38,7 @@ export interface InvoiceRowVatDto {
   percent?: number;
 }
 
-interface InvoiceRowDiscountDto {
+export interface InvoiceRowDiscountDto {
   percent?: number;
 
   amount?: number;
@@ -46,7 +46,7 @@ interface InvoiceRowDiscountDto {
   type?: number;
 }
 
-interface InvoicePeriodDto {
+export interface InvoicePeriodDto {
   stardDate: string;
 
   endDate: string;
@@ -104,7 +104,7 @@ export interface PostalAddressDto {
   countrySubdivision?: string;
 }
 
-interface EInvoiceAddressDto {
+export interface EInvoiceAddressDto {
   identifier: string;
 
   intermediator: string;
@@ -128,7 +128,7 @@ export interface InvoiceCustomerDto {
   language?: string;
 }
 
-interface InvoiceDeliveryDto {
+export interface InvoiceDeliveryDto {
   address?: PostalAddressDto;
 
   date?: string;
@@ -136,13 +136,13 @@ interface InvoiceDeliveryDto {
   period?: InvoicePeriodDto;
 }
 
-interface InvoicePaymentTermsDto {
+export interface InvoicePaymentTermsDto {
   dueDate?: string;
 
   overDueInterestPercent?: number;
 }
 
-interface InvoiceDetailsDto {
+export interface InvoiceDetailsDto {
   number?: string;
 
   date?: string;
@@ -210,7 +210,7 @@ export interface InvoiceDto {
   vatType?: InvoiceRowVatType;
 }
 
-interface CreateInvoiceResponseVoucherDto {
+export interface CreateInvoiceResponseVoucherDto {
   id: string;
 
   data: object;

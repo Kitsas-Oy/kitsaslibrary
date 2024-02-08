@@ -11,7 +11,7 @@ export interface CertificateFetchResult {
   error?: string;
 }
 
-interface CertificateOwner {
+export interface CertificateOwner {
   name: string;
   id: string;
   businessId: string;

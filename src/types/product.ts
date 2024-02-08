@@ -1,7 +1,7 @@
 import { InvoiceRowAccountingDto, InvoiceRowVatDto } from './invoice';
 import { LanguageString } from './language';
 
-interface ProductUnitDto {
+export interface ProductUnitDto {
   code: string;
   name: LanguageString;
 }

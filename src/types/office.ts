@@ -26,7 +26,7 @@ export interface Bookshelf {
   subgroups: Bookshelf[];
 }
 
-interface PermissionUserTarget {
+export interface PermissionUserTarget {
   id: string;
   name: string;
   type: string;
