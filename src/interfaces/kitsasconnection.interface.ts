@@ -12,6 +12,7 @@ import {
 import {
   AddBookResponse,
   BookListItem,
+  BookOpenCountItem,
   OrganizationStatusResponse,
 } from '../types/books';
 import { OfficeInList, OfficeUser } from '../types/office';
@@ -195,4 +196,6 @@ export interface KitsasConnectionInterface {
    * @param email Email address
    */
   findUserByEmail(email: string): Promise<UserListItem | undefined>;
+
+  getBookOpenCounts(bookId: string): Promise<BookOpenCountItem[]>;
 }

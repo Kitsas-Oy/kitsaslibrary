@@ -94,7 +94,7 @@ export class KitsasOffice implements KitsasOfficeInterface {
 
   async renameBookshelf(id: string, name: string): Promise<Bookshelf> {
     const payload = { name };
-    const { data } = await axios.put<Bookshelf>(
+    const { data } = await axios.patch<Bookshelf>(
       `/v1/bookshelves/${id}`,
       payload,
       await this.connection.getConfig()
@@ -180,5 +180,35 @@ export class KitsasOffice implements KitsasOfficeInterface {
 
   async deleteUser(id: string): Promise<void> {
     await axios.delete(`/v1/users/${id}`, await this.connection.getConfig());
+  }
+
+  async moveBook(bookId: string, bookshelfId: string): Promise<void> {
+    await axios.patch(
+      `/v1/books/${bookId}`,
+      { bookshelf: bookshelfId },
+      await this.connection.getConfig()
+    );
+  }
+
+  async changePlan(bookId: string, planId: number): Promise<void> {
+    await axios.patch(
+      `/v1/books/${bookId}`,
+      { planId },
+      await this.connection.getConfig()
+    );
+  }
+
+  async moveBookShelf(id: string, newParentId: string): Promise<Bookshelf> {
+    await axios.patch(
+      `/v1/bookshelves/${id}`,
+      { parent: newParentId },
+      await this.connection.getConfig()
+    );
+    await this.refresh();
+    const bookshelf = KitsasOffice.findBookShelf(id, this.data.bookshelves);
+    if (!bookshelf) {
+      throw new Error('Bookshelf not found');
+    }
+    return bookshelf;
   }
 }

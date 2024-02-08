@@ -19,6 +19,7 @@ import * as Responses from '../types/authresponse';
 import {
   AddBookResponse,
   BookListItem,
+  BookOpenCountItem,
   OrganizationStatusResponse,
 } from '../types/books';
 import * as Exceptions from '../types/kitsasexeptions';
@@ -328,5 +329,13 @@ export class KitsasConnection implements KitsasConnectionInterface {
     } else {
       return data[0];
     }
+  }
+
+  async getBookOpenCounts(bookId: string): Promise<BookOpenCountItem[]> {
+    const { data } = await axios.get<BookOpenCountItem[]>(
+      `/v1/books/${bookId}/logcounts`,
+      await this.getConfig()
+    );
+    return data;
   }
 }

@@ -18,6 +18,7 @@ import { AuthResponse } from '../types/authresponse';
 import {
   AddBookResponse,
   BookListItem,
+  BookOpenCountItem,
   OrganizationStatus,
   OrganizationStatusResponse,
 } from '../types/books';
@@ -538,6 +539,19 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
         email: email,
         mode: UserMode.NORMAL,
       });
+    });
+  }
+
+  getBookOpenCounts(_bookId: string): Promise<BookOpenCountItem[]> {
+    return new Promise<BookOpenCountItem[]>((resolve) => {
+      resolve([
+        {
+          id: '1dcb9463-829f-4369-9861-ae2ce7041f03',
+          name: 'Test User',
+          last: new Date(),
+          count: 257,
+        },
+      ]);
     });
   }
 }

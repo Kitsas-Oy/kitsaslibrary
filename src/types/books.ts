@@ -17,6 +17,7 @@ export interface BookListItem {
     returnedUntil?: Date;
     period?: number;
   };
+  planId?: number;
 }
 
 export interface AddBookResponse {
@@ -36,4 +37,11 @@ export interface OrganizationStatusResponse {
   status: OrganizationStatus;
   name?: string;
   companyForm?: string;
+}
+
+export interface BookOpenCountItem {
+  id: string;
+  name: string;
+  last: Date;
+  count: number;
 }

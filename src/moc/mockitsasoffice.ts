@@ -228,10 +228,37 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  deleteUser(_id: string): Promise<void> {
+  deleteUser(id: string): Promise<void> {
     return new Promise<void>((resolve) => {
+      console.log('Delete user', id);
       resolve();
+    });
+  }
+
+  moveBook(bookId: string, bookshelfId: string): Promise<void> {
+    return new Promise<void>((resolve) => {
+      console.log('Move book', bookId, bookshelfId);
+      resolve();
+    });
+  }
+
+  changePlan(bookId: string, planId: number): Promise<void> {
+    return new Promise<void>((resolve) => {
+      console.log('Change plan', bookId, planId);
+      resolve();
+    });
+  }
+
+  moveBookShelf(id: string, newParentId: string): Promise<Bookshelf> {
+    return new Promise<Bookshelf>((resolve) => {
+      console.log('Move bookshelf', id, newParentId);
+      const parent = MockKitsasOffice.findBookShelf(
+        newParentId,
+        this.bookshelves
+      );
+      const shelf = MockKitsasOffice.findBookShelf(id, this.bookshelves);
+      parent?.subgroups.push(shelf as Bookshelf);
+      resolve(shelf as Bookshelf);
     });
   }
 }

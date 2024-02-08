@@ -86,6 +86,13 @@ export interface KitsasOfficeInterface {
   renameBookshelf(id: string, name: string): Promise<Bookshelf>;
 
   /**
+   * Move bookshef
+   * @param id
+   * @param newParentId
+   */
+  moveBookShelf(id: string, newParentId: string): Promise<Bookshelf>;
+
+  /**
    * Get users of the office
    */
   getUsers(): Promise<UserListItem[]>;
@@ -112,4 +119,18 @@ export interface KitsasOfficeInterface {
    * @param id
    */
   deleteUser(id: string): Promise<void>;
+
+  /**
+   * Move book to another bookshelf
+   * @param bookId Book id
+   * @param bookshelfId Destination bookshelf id
+   */
+  moveBook(bookId: string, bookshelfId: string): Promise<void>;
+
+  /**
+   * Change plan of a book
+   * @param bookId Book id
+   * @param planId Plan id
+   */
+  changePlan(bookId: string, planId: number): Promise<void>;
 }
