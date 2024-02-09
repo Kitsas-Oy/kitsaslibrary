@@ -26,12 +26,28 @@ import { KitsasConnection } from './kitsasconnection';
  *   password: 'Test+12345',
  *   mock: true,
  * });
- * const connectionWith2FA = await KitsasService.connect({
- *   username: 'use2fa@kitsas.fi',
- *   password: 'Test+12345',
- *   code: '123456',
- *   mock: true,
- * });
+ *
+ * @remarks
+ * In case of two factor authentication, your first connection
+ * will throw TFARequiredError with a code (request2fa). Make a new connection with
+ * this code as username and the code from the authenticator app as password
+ *
+ * @example
+ * try {
+ *     await KitsasService.connect({
+ *     username: 'use2fa@kitsas.fi',
+ *     password: 'Test+12345',
+ *     mock: true,
+ *   });
+ * } catch (error) {
+ *  if (error instanceof TFARequiredError) {
+ *    const connection = await KitsasService.connect({
+ *     username: error.getRequestKey(),
+ *     password: '123456',
+ *     mock: true,
+ *   });
+ *  }
+ * }
  *
  */
 export class KitsasService {

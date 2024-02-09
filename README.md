@@ -61,11 +61,4 @@ const connection = await KitsasService.connect({
   password: 'Test+12345',
   mock: true,
 });
-
-const connectionWith2FA = await KitsasService.connect({
-  username: 'use2fa@kitsas.fi',
-  password: 'Test+12345',
-  code: '123456',
-  mock: true,
-});
 ```

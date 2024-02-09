@@ -5,9 +5,16 @@ export class InvalidCredentialsError extends Error {
 }
 
 export class TFARequiredError extends Error {
-  constructor() {
+  constructor(requestKey: string) {
     super('2FA required');
+    this.requestKey = requestKey;
   }
+
+  public getRequestKey(): string {
+    return this.requestKey;
+  }
+
+  private requestKey: string;
 }
 
 export class RefreshExpiredError extends Error {

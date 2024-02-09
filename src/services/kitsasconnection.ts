@@ -30,6 +30,12 @@ import { UserListItem } from '../types/user';
 import { KitsasBook } from './kitsasbook';
 import { KitsasOffice } from './kitsasoffice';
 
+interface KitsasConnectionError {
+  message: string;
+  errorCode?: number;
+  request2fa?: string;
+}
+
 export class KitsasConnection implements KitsasConnectionInterface {
   constructor(options: KitsasConnectionOptions, response: AuthResponse) {
     this.options = options;
@@ -47,7 +53,6 @@ export class KitsasConnection implements KitsasConnectionInterface {
     const payload = {
       username: options.username,
       password: options.password,
-      code: options.code,
     };
 
     const config: AxiosRequestConfig = {
@@ -67,13 +72,17 @@ export class KitsasConnection implements KitsasConnectionInterface {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError<Responses.ErrorResponse>;
-        if (axiosError.response?.data?.message === 'Invalid credentials') {
+        const errorData = axiosError.response?.data as KitsasConnectionError;
+        if (errorData?.message === 'Invalid credentials') {
           throw new Exceptions.InvalidCredentialsError();
-        } else if (axiosError.response?.data?.message === '2FA required') {
-          throw new Exceptions.TFARequiredError();
+        } else if (
+          errorData?.message === '2FA required' &&
+          errorData?.request2fa
+        ) {
+          throw new Exceptions.TFARequiredError(errorData?.request2fa);
         } else {
           throw new Exceptions.NetworkError(
-            axiosError.response?.data?.message || axiosError.message
+            errorData?.message || axiosError.message
           );
         }
       } else {

@@ -6,11 +6,19 @@ export class KitsasConnectionOptions {
   url?: string | undefined = undefined;
   /**
    * User email or userId (for M2M) to login
+   *
+   * In case on two factor authentication, use the code (beginning with 2FA:) you received
+   * In case on passwordless login, use auth key code (beginning with KEY:)
+   *
    * @default process.env.KITSAS_USERNAME
    */
   username?: string | undefined = undefined;
   /**
    * User password to login
+   *
+   * In case on two factor authentication, use the code from the authenticator app
+   * In case on passwordless login, use last part of the auth key code
+   *
    * @default process.env.KITSAS_PASSWORD
    */
   password?: string | undefined = undefined;
@@ -19,11 +27,6 @@ export class KitsasConnectionOptions {
    * @default process.env.KITSAS_AGENT or KitsasLibrary
    */
   agent?: string | undefined = undefined;
-  /**
-   * 2FA code
-   */
-  code?: string | undefined = undefined;
-
   /**
    * OAuth2 access token
    */
