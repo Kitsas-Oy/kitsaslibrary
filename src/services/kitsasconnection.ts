@@ -329,8 +329,9 @@ export class KitsasConnection implements KitsasConnectionInterface {
   }
 
   async findUserByEmail(email: string): Promise<UserListItem | undefined> {
+    const params = new URLSearchParams({ email });
     const { data } = await axios.get<UserListItem[]>(
-      `/v1/users?email=${email}`,
+      `/v1/users?${params.toString()}`,
       await this.getConfig()
     );
     if (data.length === 0) {
