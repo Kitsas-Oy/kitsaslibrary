@@ -185,6 +185,15 @@ export interface KitsasConnectionInterface {
     category?: string
   ): Promise<void>;
 
+  /**
+   * Replace a notification. Only for addons!
+   *
+   * @param bookId Book id
+   * @param type Notification type (info, warning, error)
+   * @param title Notification title
+   * @param text Notification content text
+   * @param category Category for replacing notifications
+   */
   replaceNotification(
     bookId: string,
     type: NotificationType,
@@ -192,6 +201,13 @@ export interface KitsasConnectionInterface {
     text: LanguageString,
     category: string
   ): Promise<void>;
+
+  /**
+   * Delete a notification. Only for addons!
+   *
+   * @param id Notification id
+   */
+  deleteNotification(id: string): Promise<void>;
 
   /**
    * Get notifications.
@@ -207,5 +223,10 @@ export interface KitsasConnectionInterface {
    */
   findUserByEmail(email: string): Promise<UserListItem | undefined>;
 
+  /**
+   * Get book open counts by user
+   *
+   * @param bookId Book id
+   */
   getBookOpenCounts(bookId: string): Promise<BookOpenCountItem[]>;
 }

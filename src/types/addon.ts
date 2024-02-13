@@ -4,6 +4,8 @@ export interface AddonCallInfo {
   user: {
     id: string;
     name: string;
+    email: string;
+    rights: string[];
   };
   organization: {
     id: string;
@@ -16,6 +18,7 @@ export interface AddonListedDto {
   id: string;
   name: LanguageString;
   active: boolean;
+  system: boolean;
 }
 
 export interface AddonInfoDto {

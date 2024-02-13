@@ -98,7 +98,12 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
               name: 'Test Office',
               type: 'OFFICE',
               rights: ['Ts', 'Tl'],
-              roles: ['5859954a-3cf9-48cb-a328-203548b5c90e'],
+              roles: [
+                {
+                  id: '5859954a-3cf9-48cb-a328-203548b5c90e',
+                  name: { fi: 'Test Role', sv: 'Test Role', en: 'Test Role' },
+                },
+              ],
             },
           ],
         },
@@ -383,6 +388,8 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
         user: {
           id: '58011d04-1be6-4f26-a4ec-e00da4e78e20',
           name: 'Test User',
+          email: 'test@kitsas.fi',
+          rights: ['Ts', 'Tl'],
         },
         organization: {
           id: 'ec48e945-c961-48f6-a424-60bee35074c4',
@@ -402,6 +409,7 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
             fi: 'Test Addon',
           },
           active: true,
+          system: false,
         },
       ]);
     });
@@ -477,6 +485,12 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
     _text: LanguageString,
     _category: string
   ): Promise<void> {
+    return new Promise<void>((resolve) => {
+      resolve();
+    });
+  }
+
+  deleteNotification(_id: string): Promise<void> {
     return new Promise<void>((resolve) => {
       resolve();
     });

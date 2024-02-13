@@ -26,12 +26,17 @@ export interface Bookshelf {
   subgroups: Bookshelf[];
 }
 
+export interface PermissionRole {
+  id: string;
+  name: LanguageString;
+}
+
 export interface PermissionUserTarget {
   id: string;
   name: string;
   type: string;
   rights: string[];
-  roles: string[];
+  roles: PermissionRole[];
 }
 
 export interface PermissionUser {

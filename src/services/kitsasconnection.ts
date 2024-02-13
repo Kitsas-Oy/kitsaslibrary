@@ -306,6 +306,10 @@ export class KitsasConnection implements KitsasConnectionInterface {
     await axios.patch('/v1/notifications', payload, await this.getConfig());
   }
 
+  async deleteNotification(id: string): Promise<void> {
+    await axios.delete(`/v1/notifications/${id}`, await this.getConfig());
+  }
+
   async getNotifications(
     bookId: string,
     addonId?: string
