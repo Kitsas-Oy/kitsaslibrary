@@ -32,10 +32,18 @@ import { MockKitsasOffice } from './mockitsasoffice';
 export class MockKitsasConnection implements KitsasConnectionInterface {
   constructor(response: AuthResponse) {
     this.name = response.name;
+    this.uuid = response.id;
   }
+
+  private name: string;
+  private uuid: string;
 
   getName(): string {
     return this.name;
+  }
+
+  getUserId(): string {
+    return this.uuid;
   }
 
   getOffices(): Promise<OfficeInList[]> {
@@ -517,8 +525,6 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
       ]);
     });
   }
-
-  private name: string;
 
   getOrganizationStatus(
     businessId: string

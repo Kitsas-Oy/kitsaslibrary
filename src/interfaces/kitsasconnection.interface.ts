@@ -40,6 +40,12 @@ export interface KitsasConnectionInterface {
   getName(): string;
 
   /**
+   * Get current user's uuid
+   * @returns User's uuid
+   */
+  getUserId(): string;
+
+  /**
    * Get list of offices
    * @returns List of offices
    */

@@ -20,9 +20,21 @@ export interface OfficeRoleAdd {
 }
 
 export interface Bookshelf {
+  /**
+   * Bookshelf id
+   */
   id: string;
+  /**
+   * Bookshelf name
+   */
   name: string;
+  /**
+   * Current user's effective rights in this bookshelf
+   */
   rights: string[];
+  /**
+   * Bookshelf inside this bookshelf
+   */
   subgroups: Bookshelf[];
 }
 

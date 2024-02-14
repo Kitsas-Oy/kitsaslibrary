@@ -42,12 +42,14 @@ export class KitsasConnection implements KitsasConnectionInterface {
     this.token = response.access_token;
     this.expiresAt = Date.now() / 1000 + response.expires_in;
     this.name = response.name;
+    this.userUuid = response.id;
   }
 
   private options: KitsasConnectionOptions;
   private token: string;
   private expiresAt: number;
   private name: string;
+  private userUuid: string;
 
   static async login(options: KitsasConnectionOptions) {
     const payload = {
@@ -118,6 +120,10 @@ export class KitsasConnection implements KitsasConnectionInterface {
 
   getName(): string {
     return this.name;
+  }
+
+  getUserId(): string {
+    return this.userUuid;
   }
 
   getBaseURL(): string {

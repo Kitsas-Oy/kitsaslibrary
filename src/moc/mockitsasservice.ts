@@ -16,6 +16,7 @@ export class MockKitsasService {
         access_token: '',
         name: 'Test User',
         expires_in: 3600,
+        id: '4ae85042-e5f6-40a5-9209-f1a66de35d09',
       });
     } else if (
       options.username === 'use2fa@kitsas.fi' &&
@@ -33,6 +34,7 @@ export class MockKitsasService {
         access_token: '',
         name: 'Double Dolphin',
         expires_in: 3600,
+        id: '4ae85042-e5f6-40a5-9209-f1a66de35d09',
       });
     } else {
       throw new Exceptions.InvalidCredentialsError();
