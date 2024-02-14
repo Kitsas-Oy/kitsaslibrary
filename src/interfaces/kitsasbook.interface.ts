@@ -69,6 +69,7 @@ export interface KitsasBookInterface {
    * @param endDate - The end date of the transactions.
    * @param entries - The transaction entries.
    * @param original - The original object.
+   * @param attachments - The attachments associated with the transactions.
    * @returns A promise that resolves to a CreateVoucherResponseDto object.
    */
   saveTransactions(
@@ -76,7 +77,8 @@ export interface KitsasBookInterface {
     startDate: Date,
     endDate: Date,
     entries: TransactionEntryDto[],
-    original: object
+    original?: object,
+    attachments?: AttachmentDto[]
   ): Promise<CreateVoucherResponseDto>;
 
   /**

@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import dayJs from 'dayjs';
 import FormData from 'form-data';
 
 import { KitsasBookInterface } from '../interfaces/kitsasbook.interface';
@@ -13,7 +12,7 @@ import {
 } from '../types';
 import { CreateInvoiceResponseDto, InvoiceDto } from '../types/invoice';
 import { Product } from '../types/product';
-import { AddTransactionsDto, TransactionEntryDto } from '../types/transactions';
+import { TransactionEntryDto } from '../types/transactions';
 
 import { KitsasConnection } from './kitsasconnection';
 
@@ -106,18 +105,28 @@ export class KitsasBook implements KitsasBookInterface {
     startDate: Date,
     endDate: Date,
     entries: TransactionEntryDto[],
-    original: object
+    original?: object,
+    attachments?: AttachmentDto[]
   ): Promise<CreateVoucherResponseDto> {
-    const payload: AddTransactionsDto = {
+    const form = new FormData();
+    const payload = {
       iban,
-      startDate: dayJs(startDate).format('YYYY-MM-DD'),
-      endDate: dayJs(endDate).format('YYYY-MM-DD'),
+      startDate,
+      endDate,
       entries,
       original,
     };
+    form.append('data', JSON.stringify(payload));
+    for (const entry of entries) {
+      form.append('entries', JSON.stringify(entry));
+    }
+
+    for (const attachment of attachments || []) {
+      form.append('attachments', attachment.content, attachment.fileName);
+    }
     const { data } = await axios.post<CreateVoucherResponseDto>(
       '/v1/transactions',
-      payload,
+      form,
       await this.getConfig()
     );
     return data;
