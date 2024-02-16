@@ -1,6 +1,6 @@
 import { KitsasOfficeInterface } from '../interfaces/kitsasoffice.interface';
 import { LanguageString, OfficeRole } from '../types';
-import { BookListItem } from '../types/books';
+import { Badge, BookListItem } from '../types/books';
 import {
   CertificateFetchResult,
   CertificateStatus,
@@ -77,7 +77,7 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
           name: 'Oy Firma Ab',
           businessId: '1234567-8',
           documentCount: 123,
-          badges: ['Inbox', 'Outbox'],
+          badges: [Badge.INBOX, Badge.OUTBOX],
           backend: 'KITSAS',
           group: {
             id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',

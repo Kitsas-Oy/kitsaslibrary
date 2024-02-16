@@ -1,8 +1,34 @@
+export enum VatStatus {
+  VATFREE = 'VATFREE',
+  CALCULATED = 'CALCULATED',
+  REPORTED = 'REPORTED',
+  RECEIVED = 'RECEIVED',
+}
+
+export enum BookCertificateStatus {
+  OK = 'OK',
+  NOVAT = 'NOVAT',
+  AUTHORIZED = 'AUTHORIZED',
+  UNAUTHORIZED = 'UNAUTHORIZED',
+  INVALID = 'INVALID',
+}
+
+export enum Badge {
+  ERROR = 'error',
+  WARN = 'warn',
+  INFO = 'info',
+  SUCCESS = 'success',
+  MARKED = 'marked',
+  OUTBOX = 'outbox',
+  DRAFTS = 'drafts',
+  INBOX = 'inbox',
+}
+
 export interface BookListItem {
   id: string;
   name: string;
   businessId?: string;
-  badges: string[];
+  badges: Badge[];
   group: {
     id: string;
     name: string;
@@ -16,8 +42,10 @@ export interface BookListItem {
     dueDate?: Date;
     returnedUntil?: Date;
     period?: number;
+    status?: VatStatus;
   };
   planId?: number;
+  cert?: BookCertificateStatus;
 }
 
 export interface AddBookResponse {

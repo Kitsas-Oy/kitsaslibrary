@@ -224,7 +224,7 @@ export class KitsasOffice implements KitsasOfficeInterface {
     transferId: string,
     password: string
   ): Promise<CertificateFetchResult> {
-    const { data } = await axios.post<CertificateFetchResult>(
+    const { data } = await axios.put<CertificateFetchResult>(
       `/v1/cert/` + this.data.id,
       { transferId, password },
       await this.connection.getConfig()
