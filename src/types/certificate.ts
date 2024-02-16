@@ -52,7 +52,6 @@ export enum CertificateStatus {
    */
   OK = 'OK',
 }
-
 export interface CertificateFetchResult {
   status: CertificateStatus;
   error?: string;
