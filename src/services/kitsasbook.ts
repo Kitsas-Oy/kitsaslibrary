@@ -38,6 +38,10 @@ export class KitsasBook implements KitsasBookInterface {
     return config;
   }
 
+  getConnection(): KitsasConnection {
+    return this.connection;
+  }
+
   getBookId(): string {
     return this.bookId;
   }

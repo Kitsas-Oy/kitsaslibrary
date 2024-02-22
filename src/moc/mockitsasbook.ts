@@ -1,3 +1,4 @@
+import { KitsasConnectionInterface } from '../interfaces';
 import { KitsasBookInterface } from '../interfaces/kitsasbook.interface';
 import {
   Account,
@@ -15,9 +16,14 @@ import {
 } from '../types';
 
 export class MockKitsasBook implements KitsasBookInterface {
-  constructor(id: string) {
+  constructor(id: string, connection: KitsasConnectionInterface) {
     this.bookId = id;
+    this.connection = connection;
   }
+  getConnection(): KitsasConnectionInterface {
+    return this.connection;
+  }
+
   getDimensions(): Promise<Dimension[]> {
     return Promise.resolve([
       {
@@ -149,4 +155,5 @@ export class MockKitsasBook implements KitsasBookInterface {
   }
 
   private bookId: string;
+  private connection: KitsasConnectionInterface;
 }

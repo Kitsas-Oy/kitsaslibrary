@@ -384,7 +384,7 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
   }
 
   getBook(bookId: string): Promise<KitsasBookInterface> {
-    const book = new MockKitsasBook(bookId);
+    const book = new MockKitsasBook(bookId, this);
     return new Promise((resolve) => {
       resolve(book);
     });

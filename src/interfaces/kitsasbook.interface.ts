@@ -10,12 +10,19 @@ import { CreateInvoiceResponseDto, InvoiceDto } from '../types/invoice';
 import { Product } from '../types/product';
 import { TransactionEntryDto } from '../types/transactions';
 
+import { KitsasConnectionInterface } from './kitsasconnection.interface';
+
 /**
  * Interface representing an accounting of the organization.
  *
  * You get KitsasBookInterface from {@link KitsasOfficeInterface.getBooks}
  */
 export interface KitsasBookInterface {
+  /**
+   * Get the connection.
+   */
+  getConnection(): KitsasConnectionInterface;
+
   /**
    * Get the book ID.
    * @returns The book ID as a string.
