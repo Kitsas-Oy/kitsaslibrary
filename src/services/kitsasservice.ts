@@ -72,17 +72,20 @@ export class KitsasService {
       return MockKitsasService.connect(options);
     }
 
-    if (!options.url) {
-      options.url = process?.env?.KITSAS_URL ?? 'https://api.kitsas.fi';
-    }
-    if (!options.username && process) {
-      options.username = process?.env?.KITSAS_USERNAME;
-    }
-    if (!options.password && process) {
-      options.password = process?.env?.KITSAS_PASSWORD;
-    }
-    if (!options.agent && process) {
-      options.agent = process?.env?.KITSAS_AGENT ?? 'KitsasLibrary';
+    try {
+      options.url =
+        options.url ?? process?.env?.KITSAS_URL ?? 'https://api.kitsas.fi';
+      options.username = options.username ?? process?.env?.KITSAS_USERNAME;
+      options.password = options.password ?? process?.env?.KITSAS_PASSWORD;
+      options.agent =
+        options.agent ?? process?.env?.KITSAS_AGENT ?? 'KitsasLibrary';
+    } catch (error) {
+      if (error instanceof ReferenceError) {
+        options.url = options.url ?? 'https://api.kitsas.fi';
+        options.agent = options.agent ?? 'KitsasLibrary';
+      } else {
+        throw new Error('Unknown error');
+      }
     }
 
     const response = await KitsasConnection.login(options);
