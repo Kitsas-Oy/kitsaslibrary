@@ -82,7 +82,6 @@ export class KitsasService {
     } catch (error) {
       if (error instanceof ReferenceError) {
         options.url = options.url ?? 'https://api.kitsas.fi';
-        options.agent = options.agent ?? 'KitsasLibrary';
       } else {
         throw new Error('Unknown error');
       }

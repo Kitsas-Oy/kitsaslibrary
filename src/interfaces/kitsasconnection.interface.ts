@@ -1,5 +1,6 @@
 import {
   AddonCallInfo,
+  AddonDataListItem,
   AddonInfoDto,
   AddonListedDto,
   AddonLogDto,
@@ -173,6 +174,11 @@ export interface KitsasConnectionInterface {
    * @param key Key
    */
   getData(bookId: string, key: string): Promise<object>;
+
+  /**
+   * List addon data. Only for addons!
+   */
+  listData(): Promise<AddonDataListItem[]>;
 
   /**
    * Add a notification. Only for addons!

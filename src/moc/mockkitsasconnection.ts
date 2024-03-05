@@ -5,6 +5,7 @@ import { KitsasBookInterface } from '../interfaces/kitsasbook.interface';
 import { KitsasOfficeInterface } from '../interfaces/kitsasoffice.interface';
 import {
   AddonCallInfo,
+  AddonDataListItem,
   AddonInfoDto,
   AddonListedDto,
   AddonLogDto,
@@ -570,6 +571,19 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
           name: 'Test User',
           last: new Date(),
           count: 257,
+        },
+      ]);
+    });
+  }
+
+  listData(): Promise<AddonDataListItem[]> {
+    return new Promise<AddonDataListItem[]>((resolve) => {
+      resolve([
+        {
+          bookId: '1dcb9463-829f-4369-9861-ae2ce7041f03',
+          name: 'Test Data',
+          businessId: '1234567-8',
+          keys: ['test', 'data'],
         },
       ]);
     });

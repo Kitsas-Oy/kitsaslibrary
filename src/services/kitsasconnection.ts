@@ -5,6 +5,7 @@ import { KitsasBookInterface } from '../interfaces/kitsasbook.interface';
 import { KitsasOfficeInterface } from '../interfaces/kitsasoffice.interface';
 import {
   AddonCallInfo,
+  AddonDataListItem,
   AddonInfoDto,
   AddonListedDto,
   AddonLogDto,
@@ -271,8 +272,16 @@ export class KitsasConnection implements KitsasConnectionInterface {
   }
 
   async getData(bookId: string, key: string): Promise<object> {
-    const { data } = await axios.get<object>(
+    const { data } = await axios.get(
       `/v1/addons/data/${bookId}/${key}`,
+      await this.getConfig()
+    );
+    return data;
+  }
+
+  async listData(): Promise<AddonDataListItem[]> {
+    const { data } = await axios.get<AddonDataListItem[]>(
+      `/v1/addons/data/`,
       await this.getConfig()
     );
     return data;

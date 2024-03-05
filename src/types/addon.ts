@@ -49,3 +49,10 @@ export interface AddonLogDto {
   data?: object;
   timestamp: Date;
 }
+
+export interface AddonDataListItem {
+  bookId: string;
+  name: string;
+  businessId?: string;
+  keys: string[];
+}
