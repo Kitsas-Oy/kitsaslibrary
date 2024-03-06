@@ -8,6 +8,8 @@ export interface TransactionEntryDto {
   message?: string;
   partner?: string;
   partnerIban?: string;
+  buyDate?: string;
+  information?: string[];
 }
 
 export interface AddTransactionsDto {
