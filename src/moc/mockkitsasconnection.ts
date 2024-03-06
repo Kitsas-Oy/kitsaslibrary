@@ -505,6 +505,15 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
     });
   }
 
+  deleteNotifications(
+    _bookId: string,
+    _category?: string | undefined
+  ): Promise<void> {
+    return new Promise<void>((resolve) => {
+      resolve();
+    });
+  }
+
   getNotifications(
     _bookId: string,
     _addonId?: string | undefined

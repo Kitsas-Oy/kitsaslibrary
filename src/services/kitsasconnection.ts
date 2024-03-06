@@ -325,6 +325,17 @@ export class KitsasConnection implements KitsasConnectionInterface {
     await axios.delete(`/v1/notifications/${id}`, await this.getConfig());
   }
 
+  async deleteNotifications(
+    bookId: string,
+    category?: string | undefined
+  ): Promise<void> {
+    await axios.delete(
+      `/v1/notifications?bookId=${bookId}` +
+        (category ? `&category=${category}` : ''),
+      await this.getConfig()
+    );
+  }
+
   async getNotifications(
     bookId: string,
     addonId?: string

@@ -222,6 +222,14 @@ export interface KitsasConnectionInterface {
   deleteNotification(id: string): Promise<void>;
 
   /**
+   * Delete notifications. Only for addons!
+   *
+   * @param bookId Book id
+   * @param category Category (optional)
+   */
+  deleteNotifications(bookId: string, category?: string): Promise<void>;
+
+  /**
    * Get notifications.
    *
    * @param bookId Book id
