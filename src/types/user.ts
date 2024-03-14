@@ -5,6 +5,8 @@ export enum UserMode {
   ADDON = 'ADDON',
   ADMIN = 'ADMIN',
   CUSTOMER = 'CUSTOMER',
+  WEBUSER = 'WEBUSER',
+  DUMMY = 'DUMMY',
 }
 
 export enum UserStatus {

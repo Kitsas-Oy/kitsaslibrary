@@ -219,7 +219,7 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
   addUser(
     name: string,
     email: string,
-    customer: boolean,
+    mode: UserMode.PRO | UserMode.CUSTOMER | UserMode.WEBUSER,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _invite: boolean
   ): Promise<UserListItem> {
@@ -228,7 +228,7 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
         id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
         name,
         email,
-        mode: customer ? UserMode.CUSTOMER : UserMode.PRO,
+        mode,
       });
     });
   }

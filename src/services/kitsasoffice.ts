@@ -8,7 +8,7 @@ import {
   CertificateStatusInformation,
 } from '../types/certificate';
 import { Bookshelf, Office, OfficeRole, OfficeRoleAdd } from '../types/office';
-import { UserListItem } from '../types/user';
+import { UserListItem, UserMode } from '../types/user';
 
 import { KitsasConnection } from './kitsasconnection';
 
@@ -164,13 +164,13 @@ export class KitsasOffice implements KitsasOfficeInterface {
   async addUser(
     name: string,
     email: string,
-    customer: boolean,
+    mode: UserMode.PRO | UserMode.CUSTOMER | UserMode.WEBUSER,
     invite: boolean
   ): Promise<UserListItem> {
     const payload = {
       name,
       email,
-      customer,
+      mode,
       officeId: this.data.id,
       invite: invite,
     };

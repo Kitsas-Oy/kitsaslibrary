@@ -4,7 +4,7 @@ import {
   CertificateStatusInformation,
 } from '../types/certificate';
 import { Bookshelf, OfficeRole } from '../types/office';
-import { UserListItem } from '../types/user';
+import { UserListItem, UserMode } from '../types/user';
 
 /**
  * Interface to office, role and bookshelf management
@@ -113,13 +113,13 @@ export interface KitsasOfficeInterface {
    *
    * @param name User's name
    * @param email User's email address
-   * @param customer Is customer of accounting office
+   * @param mode User mode (UserMode.PRO, UserMode.CUSTOMER or UserMode.WEBUSER)
    * @param invite Send invitation email to user
    */
   addUser(
     name: string,
     email: string,
-    customer: boolean,
+    mode: UserMode.PRO | UserMode.CUSTOMER | UserMode.WEBUSER,
     invite: boolean
   ): Promise<UserListItem>;
 
