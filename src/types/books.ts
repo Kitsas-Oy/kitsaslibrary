@@ -38,6 +38,8 @@ export interface BookListItem {
   modified?: Date;
   documentCount?: number;
   backend?: string;
+  trial: boolean;
+  initialized: Date;
   vat: {
     dueDate?: Date;
     returnedUntil?: Date;
