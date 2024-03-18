@@ -83,6 +83,8 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
           modified: new Date('2023-09-05'),
           documentCount: 0,
           backend: 'KITSAS',
+          initialized: new Date('2023-01-01'),
+          trial: false,
           vat: {
             dueDate: new Date('2023-10-12'),
             returnedUntil: new Date('2023-08-31'),

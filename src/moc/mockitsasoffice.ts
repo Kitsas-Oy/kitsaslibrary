@@ -86,6 +86,8 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
           },
           created: new Date('2023-10-02T15:17:32.354Z'),
           modified: new Date('2023-10-02T15:17:32.354Z'),
+          initialized: new Date('2023-10-02T15:17:32.354Z'),
+          trial: false,
           vat: {
             dueDate: new Date('2023-09-12'),
             returnedUntil: new Date('2023-06-30'),
