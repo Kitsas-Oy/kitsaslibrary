@@ -7,6 +7,7 @@ export enum UserMode {
   CUSTOMER = 'CUSTOMER',
   WEBUSER = 'WEBUSER',
   DUMMY = 'DUMMY',
+  AUDITOR = 'AUDITOR',
 }
 
 export enum UserStatus {

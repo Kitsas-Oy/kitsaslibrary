@@ -221,7 +221,11 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
   addUser(
     name: string,
     email: string,
-    mode: UserMode.PRO | UserMode.CUSTOMER | UserMode.WEBUSER,
+    mode:
+      | UserMode.PRO
+      | UserMode.CUSTOMER
+      | UserMode.WEBUSER
+      | UserMode.AUDITOR,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _invite: boolean
   ): Promise<UserListItem> {

@@ -164,7 +164,11 @@ export class KitsasOffice implements KitsasOfficeInterface {
   async addUser(
     name: string,
     email: string,
-    mode: UserMode.PRO | UserMode.CUSTOMER | UserMode.WEBUSER,
+    mode:
+      | UserMode.PRO
+      | UserMode.CUSTOMER
+      | UserMode.WEBUSER
+      | UserMode.AUDITOR,
     invite: boolean
   ): Promise<UserListItem> {
     const payload = {
