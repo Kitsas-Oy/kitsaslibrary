@@ -58,6 +58,13 @@ export interface PermissionUser {
   targets: PermissionUserTarget[];
 }
 
+export interface OfficeCustomization {
+  primaryColor?: string;
+  secondaryColor?: string;
+  topBarLogo?: string;
+  fullLogo?: string;
+}
+
 export interface Office {
   id: string;
   name: string;
@@ -67,4 +74,5 @@ export interface Office {
   roles: OfficeRole[];
   bookshelves: Bookshelf[];
   certificate: CertificateInformation;
+  customization?: OfficeCustomization;
 }

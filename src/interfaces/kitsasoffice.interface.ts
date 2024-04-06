@@ -3,7 +3,7 @@ import {
   CertificateFetchResult,
   CertificateStatusInformation,
 } from '../types/certificate';
-import { Bookshelf, OfficeRole } from '../types/office';
+import { Bookshelf, OfficeCustomization, OfficeRole } from '../types/office';
 import { UserListItem, UserMode } from '../types/user';
 
 /**
@@ -26,6 +26,11 @@ export interface KitsasOfficeInterface {
    * Get the business ID of the office.
    */
   getBusinessId(): string | undefined;
+
+  /**
+   * Get customization of the office
+   */
+  getCustomization(): OfficeCustomization | undefined;
 
   /**
    * Get books (organization for bookkeeping) of the office

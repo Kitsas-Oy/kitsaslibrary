@@ -7,7 +7,13 @@ import {
   CertificateFetchResult,
   CertificateStatusInformation,
 } from '../types/certificate';
-import { Bookshelf, Office, OfficeRole, OfficeRoleAdd } from '../types/office';
+import {
+  Bookshelf,
+  Office,
+  OfficeCustomization,
+  OfficeRole,
+  OfficeRoleAdd,
+} from '../types/office';
 import { UserListItem, UserMode } from '../types/user';
 
 import { KitsasConnection } from './kitsasconnection';
@@ -31,6 +37,10 @@ export class KitsasOffice implements KitsasOfficeInterface {
 
   getBusinessId(): string | undefined {
     return this.data.businessId;
+  }
+
+  getCustomization(): OfficeCustomization | undefined {
+    return this.data.customization;
   }
 
   async refresh(): Promise<void> {

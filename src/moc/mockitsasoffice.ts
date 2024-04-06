@@ -6,7 +6,7 @@ import {
   CertificateStatus,
   CertificateStatusInformation,
 } from '../types/certificate';
-import { Bookshelf } from '../types/office';
+import { Bookshelf, OfficeCustomization } from '../types/office';
 import { UserListItem, UserMode } from '../types/user';
 
 export class MockKitsasOffice implements KitsasOfficeInterface {
@@ -60,6 +60,15 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
 
   getBusinessId(): string | undefined {
     return '1234567-8';
+  }
+
+  getCustomization(): OfficeCustomization | undefined {
+    return {
+      primaryColor: '#ff0000',
+      secondaryColor: '#00ff00',
+      topBarLogo: 'https://example.com/logo.png',
+      fullLogo: 'https://example.com/fulllogo.png',
+    };
   }
 
   refresh(): Promise<void> {
