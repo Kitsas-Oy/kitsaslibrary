@@ -405,8 +405,12 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
         organization: {
           id: 'ec48e945-c961-48f6-a424-60bee35074c4',
           name: 'Test Organization',
+          businessId: '1234567-8',
+          trial: false,
         },
         rights: ['Ts', 'Tl'],
+        planId: 0,
+        trialPeriod: false,
       });
     });
   }

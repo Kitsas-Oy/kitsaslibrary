@@ -1,4 +1,5 @@
 import { LanguageString } from './language';
+import { OfficeType } from './office';
 
 export interface AddonCallInfo {
   user: {
@@ -10,7 +11,16 @@ export interface AddonCallInfo {
   organization: {
     id: string;
     name: string;
+    businessId: string;
+    trial: boolean;
   };
+  office?: {
+    id: string;
+    name: string;
+    type: OfficeType;
+  };
+  planId: number;
+  trialPeriod: boolean;
   rights: string[];
 }
 

@@ -65,12 +65,19 @@ export interface OfficeCustomization {
   fullLogo?: string;
 }
 
+export enum OfficeType {
+  KITSASPRO = 'KITSASPRO',
+  TALOUSVERKKO = 'TALOUSVERKKO',
+  KITSAS = 'KITSAS',
+  FREE = 'FREE',
+}
+
 export interface Office {
   id: string;
   name: string;
   created: Date;
   businessId?: string;
-  officeType?: string;
+  officeType?: OfficeType;
   roles: OfficeRole[];
   bookshelves: Bookshelf[];
   certificate: CertificateInformation;
