@@ -18,6 +18,7 @@ export interface AddonCallInfo {
     id: string;
     name: string;
     type: OfficeType;
+    businessId: string;
   };
   planId: number;
   trialPeriod: boolean;
