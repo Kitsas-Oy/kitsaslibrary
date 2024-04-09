@@ -1,6 +1,6 @@
 {
   "name": "kitsas-library",
-  "version": "0.1.41",
+  "version": "0.1.43",
   "description": "KitsasHub Client Library",
   "main": "lib/main/index.js",
   "typings": "lib/main/index.d.ts",

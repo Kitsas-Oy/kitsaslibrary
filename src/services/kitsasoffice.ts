@@ -10,6 +10,7 @@ import {
 import {
   Bookshelf,
   Office,
+  OfficeContactPerson,
   OfficeCustomization,
   OfficeRole,
   OfficeRoleAdd,
@@ -41,6 +42,10 @@ export class KitsasOffice implements KitsasOfficeInterface {
 
   getCustomization(): OfficeCustomization | undefined {
     return this.data.customization;
+  }
+
+  getContactPersons(): OfficeContactPerson[] {
+    return this.data.contactPersons ?? [];
   }
 
   async refresh(): Promise<void> {

@@ -72,6 +72,12 @@ export enum OfficeType {
   FREE = 'FREE',
 }
 
+export interface OfficeContactPerson {
+  name: string;
+  email: string;
+  phone?: string;
+}
+
 export interface Office {
   id: string;
   name: string;
@@ -82,4 +88,5 @@ export interface Office {
   bookshelves: Bookshelf[];
   certificate: CertificateInformation;
   customization?: OfficeCustomization;
+  contactPersons?: OfficeContactPerson[];
 }

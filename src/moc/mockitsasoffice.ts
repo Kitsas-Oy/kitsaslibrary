@@ -6,7 +6,11 @@ import {
   CertificateStatus,
   CertificateStatusInformation,
 } from '../types/certificate';
-import { Bookshelf, OfficeCustomization } from '../types/office';
+import {
+  Bookshelf,
+  OfficeContactPerson,
+  OfficeCustomization,
+} from '../types/office';
 import { UserListItem, UserMode } from '../types/user';
 
 export class MockKitsasOffice implements KitsasOfficeInterface {
@@ -69,6 +73,16 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
       topBarLogo: 'https://example.com/logo.png',
       fullLogo: 'https://example.com/fulllogo.png',
     };
+  }
+
+  getContactPersons(): OfficeContactPerson[] {
+    return [
+      {
+        name: 'Test User',
+        email: 'test@example.com',
+        phone: '123456789',
+      },
+    ];
   }
 
   refresh(): Promise<void> {
