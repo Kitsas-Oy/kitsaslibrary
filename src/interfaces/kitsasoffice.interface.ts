@@ -42,7 +42,6 @@ export interface KitsasOfficeInterface {
    * Get contact persons of the office
    */
   getContactPersons(): OfficeContactPerson[];
-
   /**
    * Get the type of the office
    */
