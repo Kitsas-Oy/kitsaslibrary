@@ -207,9 +207,9 @@ export class KitsasConnection implements KitsasConnectionInterface {
     await axios.patch('/v1/permissions', permissions, await this.getConfig());
   }
 
-  async listRights(): Promise<Right[]> {
+  async listRights(target?: string): Promise<Right[]> {
     const { data } = await axios.get<Right[]>(
-      '/v1/permissions/rights',
+      '/v1/permissions/rights' + (target ? `?target=${target}` : ''),
       await this.getConfig()
     );
     return data;

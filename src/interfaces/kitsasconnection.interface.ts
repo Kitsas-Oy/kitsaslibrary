@@ -114,9 +114,10 @@ export interface KitsasConnectionInterface {
   setPermissions(permissions: PermissionPatch[]): Promise<void>;
 
   /** List rights
+   * @param target Office, bookshelf or book id. Is empty, list all rights.
    * @returns List of rights
    */
-  listRights(): Promise<Right[]>;
+  listRights(target?: string): Promise<Right[]>;
 
   /**
    * Get list of active and available addons

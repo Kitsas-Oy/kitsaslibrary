@@ -122,7 +122,7 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
     });
   }
 
-  listRights(): Promise<Right[]> {
+  listRights(_target?: string): Promise<Right[]> {
     return new Promise((resolve) => {
       resolve([
         {
