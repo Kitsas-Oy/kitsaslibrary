@@ -8,6 +8,7 @@ import {
   OfficeContactPerson,
   OfficeCustomization,
   OfficeRole,
+  OfficeType,
 } from '../types/office';
 import { UserListItem, UserMode } from '../types/user';
 
@@ -41,6 +42,11 @@ export interface KitsasOfficeInterface {
    * Get contact persons of the office
    */
   getContactPersons(): OfficeContactPerson[];
+
+  /**
+   * Get the type of the office
+   */
+  getType(): OfficeType;
 
   /**
    * Get books (organization for bookkeeping) of the office

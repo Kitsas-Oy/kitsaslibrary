@@ -14,6 +14,7 @@ import {
   OfficeCustomization,
   OfficeRole,
   OfficeRoleAdd,
+  OfficeType,
 } from '../types/office';
 import { UserListItem, UserMode } from '../types/user';
 
@@ -46,6 +47,10 @@ export class KitsasOffice implements KitsasOfficeInterface {
 
   getContactPersons(): OfficeContactPerson[] {
     return this.data.contactPersons ?? [];
+  }
+
+  getType(): OfficeType {
+    return this.data.officeType ?? OfficeType.KITSASPRO;
   }
 
   async refresh(): Promise<void> {

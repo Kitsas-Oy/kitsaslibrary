@@ -10,6 +10,7 @@ import {
   Bookshelf,
   OfficeContactPerson,
   OfficeCustomization,
+  OfficeType,
 } from '../types/office';
 import { UserListItem, UserMode } from '../types/user';
 
@@ -83,6 +84,10 @@ export class MockKitsasOffice implements KitsasOfficeInterface {
         phone: '123456789',
       },
     ];
+  }
+
+  getType(): OfficeType {
+    return OfficeType.KITSASPRO;
   }
 
   refresh(): Promise<void> {
