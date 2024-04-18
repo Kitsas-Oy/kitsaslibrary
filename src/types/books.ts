@@ -67,6 +67,7 @@ export interface OrganizationStatusResponse {
   status: OrganizationStatus;
   name?: string;
   companyForm?: string;
+  ids?: string[];
 }
 
 export interface BookOpenCountItem {
