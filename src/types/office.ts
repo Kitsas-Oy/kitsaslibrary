@@ -49,6 +49,8 @@ export interface PermissionUserTarget {
   type: string;
   rights: string[];
   roles: PermissionRole[];
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface PermissionUser {
