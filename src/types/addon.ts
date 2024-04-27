@@ -45,6 +45,9 @@ export enum LogStatus {
   INFO = 'INFO',
   WARNING = 'WARNING',
   ERROR = 'ERROR',
+  CONNECTED = 'CONNECTED',
+  DISCONNECTED = 'DISCONNECTED',
+  USED = 'USED',
 }
 
 export interface AddonLogWriteDto {
