@@ -53,6 +53,7 @@ export interface CreateVoucherDto {
   partner?: CreateVoucherPartnerDto;
   dimensions?: string[];
   note?: string;
+  attention?: boolean;
 }
 
 export interface CreateVoucherResponseDto {
