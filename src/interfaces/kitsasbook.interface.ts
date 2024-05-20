@@ -93,4 +93,9 @@ export interface KitsasBookInterface {
    * @returns A promise that resolves to an array of Product objects.
    */
   getProducts(): Promise<Product[]>;
+
+  /**
+   * Get the settings.
+   */
+  getSettings(): Promise<Record<string, string>>;
 }

@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import dayjs from 'dayjs';
 import FormData from 'form-data';
 
 import { KitsasBookInterface } from '../interfaces/kitsasbook.interface';
@@ -12,7 +13,7 @@ import {
 } from '../types';
 import { CreateInvoiceResponseDto, InvoiceDto } from '../types/invoice';
 import { Product } from '../types/product';
-import { TransactionEntryDto } from '../types/transactions';
+import { AddTransactionsDto, TransactionEntryDto } from '../types/transactions';
 
 import { KitsasConnection } from './kitsasconnection';
 
@@ -93,8 +94,10 @@ export class KitsasBook implements KitsasBookInterface {
   ): Promise<CreateInvoiceResponseDto> {
     const form = new FormData();
     form.append('invoice', JSON.stringify(invoice));
-    for (const attachment of attachments) {
-      form.append('attachments', attachment.content, attachment.fileName);
+    for (const attachment of attachments ?? []) {
+      form.append('attachments', attachment.content, {
+        filename: attachment.fileName,
+      });
     }
     const { data } = await axios.post<CreateInvoiceResponseDto>(
       '/v1/invoices',
@@ -113,20 +116,19 @@ export class KitsasBook implements KitsasBookInterface {
     attachments?: AttachmentDto[]
   ): Promise<CreateVoucherResponseDto> {
     const form = new FormData();
-    const payload = {
+    const payload: AddTransactionsDto = {
       iban,
-      startDate,
-      endDate,
+      startDate: dayjs(startDate).format('YYYY-MM-DD'),
+      endDate: dayjs(endDate).format('YYYY-MM-DD'),
       entries,
       original,
     };
     form.append('data', JSON.stringify(payload));
-    for (const entry of entries) {
-      form.append('entries', JSON.stringify(entry));
-    }
 
-    for (const attachment of attachments || []) {
-      form.append('attachments', attachment.content, attachment.fileName);
+    for (const attachment of attachments ?? []) {
+      form.append('attachments', attachment.content, {
+        filename: attachment.fileName,
+      });
     }
     const { data } = await axios.post<CreateVoucherResponseDto>(
       '/v1/transactions',
@@ -139,6 +141,14 @@ export class KitsasBook implements KitsasBookInterface {
   async getProducts(): Promise<Product[]> {
     const { data } = await axios.get<Product[]>(
       '/v1/products',
+      await this.getConfig()
+    );
+    return data;
+  }
+
+  async getSettings(): Promise<Record<string, string>> {
+    const { data } = await axios.get<Record<string, string>>(
+      '/v1/settings',
       await this.getConfig()
     );
     return data;

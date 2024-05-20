@@ -17,5 +17,5 @@ export interface AddTransactionsDto {
   startDate: string;
   endDate: string;
   entries: TransactionEntryDto[];
-  original: object;
+  original?: object;
 }

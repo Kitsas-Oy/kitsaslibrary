@@ -154,6 +154,12 @@ export class MockKitsasBook implements KitsasBookInterface {
     ]);
   }
 
+  getSettings(): Promise<Record<string, string>> {
+    return Promise.resolve({
+      Nimi: 'Testiyritys',
+    });
+  }
+
   private bookId: string;
   private connection: KitsasConnectionInterface;
 }
