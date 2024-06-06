@@ -2,6 +2,7 @@ export enum VoucherType {
   INCOME = 'INCOME',
   EXPENSE = 'EXPENSE',
   BILLOFCOSTS = 'BILLOFCOSTS',
+  IMPORT = 'IMPORT',
   OTHER = 'OTHER',
 }
 
@@ -54,6 +55,7 @@ export interface CreateVoucherDto {
   dimensions?: string[];
   note?: string;
   attention?: boolean;
+  origin?: object;
 }
 
 export interface CreateVoucherResponseDto {
