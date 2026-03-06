@@ -28,3 +28,9 @@ export class NetworkError extends Error {
     super(message);
   }
 }
+
+export class InvalidUuidError extends Error {
+  constructor(paramName: string) {
+    super(`Invalid UUID format for ${paramName}`);
+  }
+}

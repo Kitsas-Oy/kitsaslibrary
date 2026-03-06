@@ -47,6 +47,10 @@ export class MockKitsasConnection implements KitsasConnectionInterface {
     return this.uuid;
   }
 
+  getTimeout(): number {
+    return 30000;
+  }
+
   getOffices(): Promise<OfficeInList[]> {
     return new Promise((resolve) => {
       resolve([

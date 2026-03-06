@@ -27,6 +27,7 @@ import * as Exceptions from '../types/kitsasexeptions';
 import { Office, OfficeInList, PermissionUser } from '../types/office';
 import { PermissionPatch, Right } from '../types/rights';
 import { UserListItem } from '../types/user';
+import { validateUuid } from '../utils/validation';
 
 import { KitsasBook } from './kitsasbook';
 import { KitsasOffice } from './kitsasoffice';
@@ -60,6 +61,7 @@ export class KitsasConnection implements KitsasConnectionInterface {
 
     const config: AxiosRequestConfig = {
       baseURL: options.url,
+      timeout: options.timeout ?? 30000,
       headers: {
         'User-Agent': options.agent,
         Authorization: options.token && 'Bearer ' + options.token,
@@ -100,6 +102,7 @@ export class KitsasConnection implements KitsasConnectionInterface {
     }
     const config: AxiosRequestConfig = {
       baseURL: this.options.url,
+      timeout: this.options.timeout ?? 30000,
       headers: {
         'User-Agent': this.options.agent,
         Authorization: 'Bearer ' + this.token,
@@ -135,6 +138,10 @@ export class KitsasConnection implements KitsasConnectionInterface {
     return this.options.agent;
   }
 
+  getTimeout(): number {
+    return this.options.timeout ?? 30000;
+  }
+
   async getOffices(): Promise<OfficeInList[]> {
     const { data } = await axios.get<OfficeInList[]>(
       '/v1/offices',
@@ -144,6 +151,7 @@ export class KitsasConnection implements KitsasConnectionInterface {
   }
 
   async getOffice(id: string): Promise<KitsasOfficeInterface> {
+    validateUuid(id, 'id');
     const { data } = await axios.get<Office>(
       `/v1/offices/${id}`,
       await this.getConfig()
@@ -160,6 +168,7 @@ export class KitsasConnection implements KitsasConnectionInterface {
   }
 
   async getBook(bookId: string): Promise<KitsasBookInterface> {
+    validateUuid(bookId, 'bookId');
     const { data } = await axios.get<AuthResponse>(
       '/v1/login/' + bookId,
       await this.getConfig()
@@ -175,6 +184,7 @@ export class KitsasConnection implements KitsasConnectionInterface {
     backend?: string,
     planId?: number
   ): Promise<AddBookResponse> {
+    validateUuid(bookshelfId, 'bookshelfId');
     const payload = {
       name,
       businessId,
@@ -192,10 +202,12 @@ export class KitsasConnection implements KitsasConnectionInterface {
   }
 
   async deleteBook(bookId: string): Promise<void> {
+    validateUuid(bookId, 'bookId');
     await axios.delete(`/v1/books/${bookId}`, await this.getConfig());
   }
 
   async getPermissions(target: string): Promise<PermissionUser[]> {
+    validateUuid(target, 'target');
     const { data } = await axios.get<PermissionUser[]>(
       '/v1/permissions?target=' + target,
       await this.getConfig()
@@ -208,6 +220,7 @@ export class KitsasConnection implements KitsasConnectionInterface {
   }
 
   async listRights(target?: string): Promise<Right[]> {
+    if (target) validateUuid(target, 'target');
     const { data } = await axios.get<Right[]>(
       '/v1/permissions/rights' + (target ? `?target=${target}` : ''),
       await this.getConfig()
@@ -216,6 +229,7 @@ export class KitsasConnection implements KitsasConnectionInterface {
   }
 
   async getAddonList(target: string): Promise<AddonListedDto[]> {
+    validateUuid(target, 'target');
     const { data } = await axios.get<AddonListedDto[]>(
       `/v1/addons/?target=${target}`,
       await this.getConfig()
@@ -224,6 +238,8 @@ export class KitsasConnection implements KitsasConnectionInterface {
   }
 
   async getAddonInfo(addonId: string, target: string): Promise<AddonInfoDto> {
+    validateUuid(addonId, 'addonId');
+    validateUuid(target, 'target');
     const { data } = await axios.get<AddonInfoDto>(
       `/v1/addons/${addonId}?target=${target}`,
       await this.getConfig()
@@ -232,6 +248,7 @@ export class KitsasConnection implements KitsasConnectionInterface {
   }
 
   async getAddonCallInfo(callId: string): Promise<AddonCallInfo> {
+    validateUuid(callId, 'callId');
     const { data } = await axios.get<AddonCallInfo>(
       `/v1/addons/call/${callId}`,
       await this.getConfig()
@@ -245,6 +262,7 @@ export class KitsasConnection implements KitsasConnectionInterface {
     message: string,
     data?: object | undefined
   ): Promise<void> {
+    validateUuid(bookId, 'bookId');
     const payload = {
       bookId,
       status,
@@ -255,15 +273,19 @@ export class KitsasConnection implements KitsasConnectionInterface {
   }
 
   async getAddonLog(bookId: string, addonId?: string): Promise<AddonLogDto[]> {
+    validateUuid(bookId, 'bookId');
+    if (addonId) validateUuid(addonId, 'addonId');
+    const params = new URLSearchParams({ bookId });
+    if (addonId) params.append('addonId', addonId);
     const { data } = await axios.get<AddonLogDto[]>(
-      `/v1/addons/log/?bookId=${bookId}` +
-        (addonId ? ` &addonId=${addonId}` : ''),
+      `/v1/addons/log/?${params.toString()}`,
       await this.getConfig()
     );
     return data;
   }
 
   async saveData(bookId: string, key: string, data: object): Promise<void> {
+    validateUuid(bookId, 'bookId');
     await axios.put(
       `/v1/addons/data/${bookId}/${key}`,
       data,
@@ -272,6 +294,7 @@ export class KitsasConnection implements KitsasConnectionInterface {
   }
 
   async getData(bookId: string, key: string): Promise<object> {
+    validateUuid(bookId, 'bookId');
     const { data } = await axios.get(
       `/v1/addons/data/${bookId}/${key}`,
       await this.getConfig()
@@ -294,6 +317,7 @@ export class KitsasConnection implements KitsasConnectionInterface {
     text: LanguageString,
     category?: string | undefined
   ): Promise<void> {
+    validateUuid(bookId, 'bookId');
     const payload = {
       bookId,
       type,
@@ -311,6 +335,7 @@ export class KitsasConnection implements KitsasConnectionInterface {
     text: LanguageString,
     category: string
   ): Promise<void> {
+    validateUuid(bookId, 'bookId');
     const payload = {
       bookId,
       type,
@@ -322,6 +347,7 @@ export class KitsasConnection implements KitsasConnectionInterface {
   }
 
   async deleteNotification(id: string): Promise<void> {
+    validateUuid(id, 'id');
     await axios.delete(`/v1/notifications/${id}`, await this.getConfig());
   }
 
@@ -329,6 +355,7 @@ export class KitsasConnection implements KitsasConnectionInterface {
     bookId: string,
     category?: string | undefined
   ): Promise<void> {
+    validateUuid(bookId, 'bookId');
     await axios.delete(
       `/v1/notifications?bookId=${bookId}` +
         (category ? `&category=${category}` : ''),
@@ -340,6 +367,8 @@ export class KitsasConnection implements KitsasConnectionInterface {
     bookId: string,
     addonId?: string
   ): Promise<Notification[]> {
+    validateUuid(bookId, 'bookId');
+    if (addonId) validateUuid(addonId, 'addonId');
     const { data } = await axios.get<Notification[]>(
       `/v1/notifications?bookId=${bookId}` +
         (addonId ? `&addonId=${addonId}` : ''),
@@ -372,6 +401,7 @@ export class KitsasConnection implements KitsasConnectionInterface {
   }
 
   async getBookOpenCounts(bookId: string): Promise<BookOpenCountItem[]> {
+    validateUuid(bookId, 'bookId');
     const { data } = await axios.get<BookOpenCountItem[]>(
       `/v1/books/${bookId}/logcounts`,
       await this.getConfig()

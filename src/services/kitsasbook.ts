@@ -31,6 +31,7 @@ export class KitsasBook implements KitsasBookInterface {
   async getConfig(): Promise<AxiosRequestConfig> {
     const config: AxiosRequestConfig = {
       baseURL: this.connection.getBaseURL(),
+      timeout: this.connection.getTimeout(),
       headers: {
         'User-Agent': this.connection.getAgent(),
         Authorization: 'Bearer ' + this.token,

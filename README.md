@@ -30,7 +30,7 @@ import { KitsasService } from 'kitsaslibrary';
 
 const connection = await KitsasService.connect({
   username: 'name@kitsas.fi',
-  password: 'secret',
+  password: 'your-password',
 });
 ```
 
@@ -55,10 +55,12 @@ await book.saveVoucher(document, []);
 
 ### Using mock implementation
 
+For local development and testing, use mock mode. **Note:** The credentials below are test-only and must never be used with the real Kitsas API.
+
 ```typescript
 const connection = await KitsasService.connect({
   username: 'test@kitsas.fi',
-  password: 'Test+12345',
+  password: 'Test+12345', // Mock-only test credentials
   mock: true,
 });
 ```

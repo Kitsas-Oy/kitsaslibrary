@@ -36,4 +36,10 @@ export class KitsasConnectionOptions {
    * Use mock implementation (for testing)
    */
   mock?: boolean = false;
+
+  /**
+   * Request timeout in milliseconds
+   * @default 30000
+   */
+  timeout?: number | undefined = undefined;
 }

@@ -4,6 +4,10 @@ import * as Exceptions from '../types/kitsasexeptions';
 
 import { MockKitsasConnection } from './mockkitsasconnection';
 
+/**
+ * Mock service for unit tests only. Credentials below are test fixtures –
+ * never use in production or with real Kitsas API.
+ */
 export class MockKitsasService {
   static async connect(
     options: KitsasConnectionOptions

@@ -17,6 +17,7 @@ import {
   OfficeType,
 } from '../types/office';
 import { UserListItem, UserMode } from '../types/user';
+import { validateUuid } from '../utils/validation';
 
 import { KitsasConnection } from './kitsasconnection';
 
@@ -62,6 +63,7 @@ export class KitsasOffice implements KitsasOfficeInterface {
   }
 
   async getBooks(bookshelfId?: string): Promise<BookListItem[]> {
+    if (bookshelfId) validateUuid(bookshelfId, 'bookshelfId');
     const { data } = await axios.get<BookListItem[]>(
       bookshelfId
         ? '/v1/books?bookshelf=' + bookshelfId
@@ -99,6 +101,7 @@ export class KitsasOffice implements KitsasOfficeInterface {
     name: string,
     parentId?: string | undefined
   ): Promise<Bookshelf> {
+    if (parentId) validateUuid(parentId, 'parentId');
     const payload = { name };
     const { data } = await axios.post<Bookshelf>(
       `/v1/bookshelves/${parentId ?? this.getId()}`,
@@ -117,6 +120,7 @@ export class KitsasOffice implements KitsasOfficeInterface {
   }
 
   async renameBookshelf(id: string, name: string): Promise<Bookshelf> {
+    validateUuid(id, 'id');
     const payload = { name };
     const { data } = await axios.patch<Bookshelf>(
       `/v1/bookshelves/${id}`,
@@ -135,6 +139,7 @@ export class KitsasOffice implements KitsasOfficeInterface {
   }
 
   async deleteBookshelf(id: string): Promise<void> {
+    validateUuid(id, 'id');
     await axios.delete(
       `/v1/bookshelves/${id}`,
       await this.connection.getConfig()
@@ -158,6 +163,7 @@ export class KitsasOffice implements KitsasOfficeInterface {
     name: LanguageString,
     rights: string[]
   ): Promise<OfficeRole> {
+    validateUuid(id, 'id');
     const payload: OfficeRoleAdd = { name, rights };
     const { data } = await axios.put<OfficeRole>(
       `/v1/roles/${id}`,
@@ -169,6 +175,7 @@ export class KitsasOffice implements KitsasOfficeInterface {
   }
 
   async deleteRole(id: string): Promise<void> {
+    validateUuid(id, 'id');
     await axios.delete(`/v1/roles/${id}`, await this.connection.getConfig());
     await this.refresh();
   }
@@ -207,10 +214,13 @@ export class KitsasOffice implements KitsasOfficeInterface {
   }
 
   async deleteUser(id: string): Promise<void> {
+    validateUuid(id, 'id');
     await axios.delete(`/v1/users/${id}`, await this.connection.getConfig());
   }
 
   async moveBook(bookId: string, bookshelfId: string): Promise<void> {
+    validateUuid(bookId, 'bookId');
+    validateUuid(bookshelfId, 'bookshelfId');
     await axios.patch(
       `/v1/books/${bookId}`,
       { bookshelf: bookshelfId },
@@ -219,6 +229,7 @@ export class KitsasOffice implements KitsasOfficeInterface {
   }
 
   async changePlan(bookId: string, planId: number): Promise<void> {
+    validateUuid(bookId, 'bookId');
     await axios.patch(
       `/v1/books/${bookId}`,
       { planId },
@@ -227,6 +238,8 @@ export class KitsasOffice implements KitsasOfficeInterface {
   }
 
   async moveBookShelf(id: string, newParentId: string): Promise<Bookshelf> {
+    validateUuid(id, 'id');
+    validateUuid(newParentId, 'newParentId');
     await axios.patch(
       `/v1/bookshelves/${id}`,
       { parent: newParentId },
@@ -248,6 +261,7 @@ export class KitsasOffice implements KitsasOfficeInterface {
     transferId: string,
     password: string
   ): Promise<CertificateFetchResult> {
+    validateUuid(transferId, 'transferId');
     const { data } = await axios.put<CertificateFetchResult>(
       `/v1/cert/` + this.data.id,
       { transferId, password },

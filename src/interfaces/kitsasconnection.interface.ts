@@ -47,6 +47,12 @@ export interface KitsasConnectionInterface {
   getUserId(): string;
 
   /**
+   * Get request timeout in milliseconds
+   * @returns Timeout in ms (default 30000)
+   */
+  getTimeout(): number;
+
+  /**
    * Get list of offices
    * @returns List of offices
    */
